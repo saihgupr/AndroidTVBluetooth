@@ -1,12 +1,11 @@
 # AndroidTVBluetooth
 
-A lightweight utility for Android TV that allows you to connect and disconnect specific Bluetooth devices using simple ADB shell commands.
+A lightweight utility for Android TV that makes it easy to **quick connect/disconnect** paired Bluetooth devices via ADB.
 
 ## Features
 
 - **Low Overhead:** Minimal impact on system resources.
-- **Background Active:** Works immediately upon boot once initialized.
-- **Restart Persistent:** Once activated, the service stays ready across device restarts. No need to open the app again.
+- **Restart Persistent:** Works immediately after boot once initialized. The service stays ready across device restarts—no need to open the app again.
 
 ## Usage
 
@@ -70,10 +69,6 @@ If connection fails, check `logcat` to see which devices the TV detects:
 adb logcat -d | grep "BtManagerHelper"
 ```
 This will print a list of paired devices if your specified name was not found.
-
-## Technical Note on Persistence
-
-The app uses a `RECEIVE_BOOT_COMPLETED` intent filter and a standard `BroadcastReceiver`. When you restart your TV, Android keeps this receiver registered. When an ADB broadcast is sent, the system automatically wakes up the app to handle the command. No manual intervention is required after a reboot.
 
 ---
 
