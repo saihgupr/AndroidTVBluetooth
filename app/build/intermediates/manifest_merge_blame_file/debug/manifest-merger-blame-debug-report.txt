@@ -1,0 +1,123 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.saihgupr.btcontrol"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+9        android:targetSdkVersion="34" />
+10
+11    <!-- Legacy Permissions -->
+12    <uses-permission android:name="android.permission.BLUETOOTH" />
+12-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:6:5-68
+12-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:6:22-65
+13    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+13-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:7:5-74
+13-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:7:22-71
+14
+15    <!-- Android 12+ Permissions -->
+16    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+16-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:10:5-76
+16-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:10:22-73
+17
+18    <uses-feature
+18-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:11:5-87
+19        android:name="android.software.leanback"
+19-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:11:19-59
+20        android:required="false" />
+20-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:11:60-84
+21    <uses-feature
+21-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:5-90
+22        android:name="android.hardware.touchscreen"
+22-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:19-62
+23        android:required="false" />
+23-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:63-87
+24
+25    <permission
+25-->[androidx.core:core:1.9.0] /Users/chrislapointe/.gradle/caches/transforms-4/566acc714c8179f607f6e5bc825559b8/transformed/core-1.9.0/AndroidManifest.xml:22:5-24:47
+26        android:name="com.saihgupr.btcontrol.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+26-->[androidx.core:core:1.9.0] /Users/chrislapointe/.gradle/caches/transforms-4/566acc714c8179f607f6e5bc825559b8/transformed/core-1.9.0/AndroidManifest.xml:23:9-81
+27        android:protectionLevel="signature" />
+27-->[androidx.core:core:1.9.0] /Users/chrislapointe/.gradle/caches/transforms-4/566acc714c8179f607f6e5bc825559b8/transformed/core-1.9.0/AndroidManifest.xml:24:9-44
+28
+29    <uses-permission android:name="com.saihgupr.btcontrol.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+29-->[androidx.core:core:1.9.0] /Users/chrislapointe/.gradle/caches/transforms-4/566acc714c8179f607f6e5bc825559b8/transformed/core-1.9.0/AndroidManifest.xml:26:5-97
+29-->[androidx.core:core:1.9.0] /Users/chrislapointe/.gradle/caches/transforms-4/566acc714c8179f607f6e5bc825559b8/transformed/core-1.9.0/AndroidManifest.xml:26:22-94
+30
+31    <application
+31-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:14:5-39:19
+32        android:allowBackup="true"
+32-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:15:9-35
+33        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+33-->[androidx.core:core:1.9.0] /Users/chrislapointe/.gradle/caches/transforms-4/566acc714c8179f607f6e5bc825559b8/transformed/core-1.9.0/AndroidManifest.xml:28:18-86
+34        android:debuggable="true"
+35        android:extractNativeLibs="false"
+36        android:label="BT Control"
+36-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:16:9-35
+37        android:theme="@style/Theme.AppCompat" >
+37-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:17:9-47
+38        <activity
+38-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:19:9-27:20
+39            android:name="com.saihgupr.btcontrol.MainActivity"
+39-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:20:13-41
+40            android:exported="true" >
+40-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:21:13-36
+41            <intent-filter>
+41-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:22:13-26:29
+42                <action android:name="android.intent.action.MAIN" />
+42-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:23:17-69
+42-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:23:25-66
+43
+44                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+44-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:24:17-86
+44-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:24:27-83
+45                <category android:name="android.intent.category.LAUNCHER" />
+45-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:25:17-77
+45-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:25:27-74
+46            </intent-filter>
+47        </activity>
+48
+49        <receiver
+49-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:29:9-37:20
+50            android:name="com.saihgupr.btcontrol.BluetoothControlReceiver"
+50-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:30:13-53
+51            android:enabled="true"
+51-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:31:13-35
+52            android:exported="true" >
+52-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:32:13-36
+53            <intent-filter>
+53-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:33:13-36:29
+54                <action android:name="com.saihgupr.btcontrol.ACTION_CONNECT" />
+54-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:34:17-80
+54-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:34:25-77
+55                <action android:name="com.saihgupr.btcontrol.ACTION_DISCONNECT" />
+55-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:35:17-83
+55-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:35:25-80
+56            </intent-filter>
+57        </receiver>
+58
+59        <provider
+59-->[androidx.emoji2:emoji2:1.2.0] /Users/chrislapointe/.gradle/caches/transforms-4/1f92642ae243f896e0e65bfb826cd016/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+60            android:name="androidx.startup.InitializationProvider"
+60-->[androidx.emoji2:emoji2:1.2.0] /Users/chrislapointe/.gradle/caches/transforms-4/1f92642ae243f896e0e65bfb826cd016/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:25:13-67
+61            android:authorities="com.saihgupr.btcontrol.androidx-startup"
+61-->[androidx.emoji2:emoji2:1.2.0] /Users/chrislapointe/.gradle/caches/transforms-4/1f92642ae243f896e0e65bfb826cd016/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:26:13-68
+62            android:exported="false" >
+62-->[androidx.emoji2:emoji2:1.2.0] /Users/chrislapointe/.gradle/caches/transforms-4/1f92642ae243f896e0e65bfb826cd016/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:27:13-37
+63            <meta-data
+63-->[androidx.emoji2:emoji2:1.2.0] /Users/chrislapointe/.gradle/caches/transforms-4/1f92642ae243f896e0e65bfb826cd016/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+64                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+64-->[androidx.emoji2:emoji2:1.2.0] /Users/chrislapointe/.gradle/caches/transforms-4/1f92642ae243f896e0e65bfb826cd016/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:30:17-75
+65                android:value="androidx.startup" />
+65-->[androidx.emoji2:emoji2:1.2.0] /Users/chrislapointe/.gradle/caches/transforms-4/1f92642ae243f896e0e65bfb826cd016/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:31:17-49
+66            <meta-data
+66-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/chrislapointe/.gradle/caches/transforms-4/54a31dc39a671eb8b266de6bcf91595f/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:31:13-33:52
+67                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+67-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/chrislapointe/.gradle/caches/transforms-4/54a31dc39a671eb8b266de6bcf91595f/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:32:17-78
+68                android:value="androidx.startup" />
+68-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/chrislapointe/.gradle/caches/transforms-4/54a31dc39a671eb8b266de6bcf91595f/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:33:17-49
+69        </provider>
+70    </application>
+71
+72</manifest>
