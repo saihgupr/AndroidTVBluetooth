@@ -1,48 +1,58 @@
-# Android TV Bluetooth Controller Usage Guide
+# Android TV Bluetooth Control
 
-## Concept: ADB Broadcasts
-You asked about "listening for adb broadcasts". Here is how it works:
-1.  **The Receiver**: The app has a "BroadcastReceiver" component that sits dormant on your Android TV headers `com.saihgupr.btcontrol.ACTION_CONNECT`.
-2.  **The Trigger**: specific terminal command (`am broadcast`) sends a signal to the Android system.
-3.  **The Action**: The system sees that our app is listening for this signal and wakes it up to execute the Bluetooth connection logic.
+A lightweight Android utility that allows you to connect and disconnect specific Bluetooth devices on Google TV (Android TV) using simple ADB shell commands.
 
-This allows you to control the app **without opening it on the TV screen**.
+## Installation
 
-## Build & Install
-Since this is a raw project, you need to compile it.
-1.  Open the project in **Android Studio**.
-2.  Build > **Build Bundle(s) / APK(s)** > **Build APK(s)**.
-3.  Install via ADB:
+1.  **Build the APK**:
     ```bash
-    # First connect to your TV
-    adb connect 192.168.1.105
-    
-    # Then install
-    adb install app-debug.apk
-    
-    # CRITICAL: Grant Permissions (Required for Android 12+)
+    ./gradlew assembleDebug
+    ```
+2.  **Install via ADB**:
+    ```bash
+    adb install -r app/build/outputs/apk/debug/app-debug.apk
+    ```
+3.  **Grant Permissions** (Required for Android 12+):
+    ```bash
     adb shell pm grant com.saihgupr.btcontrol android.permission.BLUETOOTH_CONNECT
     ```
+4.  **Initialize**:
+    Launch the app **once** manually on your TV to move it out of the "stopped" state. You can close it immediately after.
 
-## Usage Commands
+## Usage
 
-### Connect a Device (by MAC)
-**Ensure you are connected:** `adb connect 192.168.1.105`
+Control your Bluetooth devices by sending broadcast intents through ADB.
 
-Replace `AA:BB:CC:DD:EE:FF` with your device's MAC Address.
+### Connect a Device
+
+**By Name (Recommended):**
 ```bash
-adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_CONNECT -n com.saihgupr.btcontrol/.BluetoothControlReceiver -e address "AA:BB:CC:DD:EE:FF"
+adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_CONNECT \
+  -n com.saihgupr.btcontrol/.BluetoothControlReceiver \
+  -e name "Your Device Name"
 ```
+*Note: Name matching is case-insensitive (e.g., "LE_WH-1000XM3").*
 
-### Connect a Device (by Name)
-Replace `Headphones` with your device's exact paired name.
+**By MAC Address:**
 ```bash
-adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_CONNECT -n com.saihgupr.btcontrol/.BluetoothControlReceiver -e name "Headphones"
+adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_CONNECT \
+  -n com.saihgupr.btcontrol/.BluetoothControlReceiver \
+  -e address "CC:98:8B:F4:97:BA"
 ```
+*Note: MAC addresses can use colons (`:`) or dashes (`-`).*
 
 ### Disconnect a Device
+
 ```bash
-adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_DISCONNECT -n com.saihgupr.btcontrol/.BluetoothControlReceiver -e address "AA:BB:CC:DD:EE:FF"
-# OR by name
-adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_DISCONNECT -n com.saihgupr.btcontrol/.BluetoothControlReceiver -e name "Headphones"
+adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_DISCONNECT \
+  -n com.saihgupr.btcontrol/.BluetoothControlReceiver \
+  -e name "Your Device Name"
 ```
+
+## Troubleshooting
+
+If connection fails, check `logcat` to see what devices the TV detects:
+```bash
+adb logcat -d | grep "BtManagerHelper"
+```
+This will print a list of available paired devices if your specified name was not found.
