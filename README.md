@@ -6,6 +6,7 @@ A lightweight utility for Android TV that makes it easy to **quick connect/disco
 
 - **Low Overhead:** Minimal impact on system resources.
 - **Restart Persistent:** Works immediately after boot once initialized. The service stays ready across device restarts—no need to open the app again.
+- **Zero Interaction:** No persistent background process or app icons to manage; only wakes up when a command is received.
 
 ## Usage
 
