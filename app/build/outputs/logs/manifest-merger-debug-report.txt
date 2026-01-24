@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:2:1-41:12
-INJECTED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:2:1-41:12
-INJECTED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:2:1-41:12
-INJECTED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:2:1-41:12
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:2:1-43:12
+INJECTED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:2:1-43:12
+INJECTED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:2:1-43:12
+INJECTED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:2:1-43:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/chrislapointe/.gradle/caches/transforms-4/c4f2e3883abe60a273e37b3691e88737/transformed/jetified-appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/chrislapointe/.gradle/caches/transforms-4/bc020576218432ec790f99842ad6708e/transformed/appcompat-1.6.1/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.fragment:fragment:1.3.6] /Users/chrislapointe/.gradle/caches/transforms-4/8e8d1b0f251ca760ec94bdb77fcbb2ed/transformed/fragment-1.3.6/AndroidManifest.xml:17:1-24:12
@@ -54,21 +54,25 @@ uses-permission#android.permission.BLUETOOTH_CONNECT
 ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:10:5-76
 	android:name
 		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:10:22-73
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:11:5-81
+	android:name
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:11:22-78
 uses-feature#android.software.leanback
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:11:5-87
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:5-87
 	android:required
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:11:60-84
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:60-84
 	android:name
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:11:19-59
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:19-59
 uses-feature#android.hardware.touchscreen
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:5-90
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:13:5-90
 	android:required
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:63-87
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:13:63-87
 	android:name
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:19-62
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:13:19-62
 application
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:14:5-39:19
-INJECTED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:14:5-39:19
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:15:5-41:19
+INJECTED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:15:5-41:19
 MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/chrislapointe/.gradle/caches/transforms-4/1f92642ae243f896e0e65bfb826cd016/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/chrislapointe/.gradle/caches/transforms-4/1f92642ae243f896e0e65bfb826cd016/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.core:core:1.9.0] /Users/chrislapointe/.gradle/caches/transforms-4/566acc714c8179f607f6e5bc825559b8/transformed/core-1.9.0/AndroidManifest.xml:28:5-89
@@ -84,49 +88,53 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/chri
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.9.0] /Users/chrislapointe/.gradle/caches/transforms-4/566acc714c8179f607f6e5bc825559b8/transformed/core-1.9.0/AndroidManifest.xml:28:18-86
 	android:label
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:16:9-35
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:17:9-35
 	android:allowBackup
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:15:9-35
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:16:9-35
 	android:theme
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:17:9-47
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:18:9-47
 activity#com.saihgupr.btcontrol.MainActivity
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:19:9-27:20
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:20:9-28:20
 	android:exported
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:21:13-36
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:22:13-36
 	android:name
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:20:13-41
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:21:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER+category:name:android.intent.category.LEANBACK_LAUNCHER
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:22:13-26:29
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:23:13-27:29
 action#android.intent.action.MAIN
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:23:17-69
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:24:17-69
 	android:name
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:23:25-66
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:24:25-66
 category#android.intent.category.LEANBACK_LAUNCHER
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:24:17-86
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:25:17-86
 	android:name
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:24:27-83
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:25:27-83
 category#android.intent.category.LAUNCHER
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:25:17-77
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:26:17-77
 	android:name
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:25:27-74
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:26:27-74
 receiver#com.saihgupr.btcontrol.BluetoothControlReceiver
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:29:9-37:20
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:30:9-39:20
 	android:enabled
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:31:13-35
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:32:13-35
 	android:exported
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:32:13-36
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:33:13-36
 	android:name
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:30:13-53
-intent-filter#action:name:com.saihgupr.btcontrol.ACTION_CONNECT+action:name:com.saihgupr.btcontrol.ACTION_DISCONNECT
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:33:13-36:29
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:31:13-53
+intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:com.saihgupr.btcontrol.ACTION_CONNECT+action:name:com.saihgupr.btcontrol.ACTION_DISCONNECT
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:34:13-38:29
 action#com.saihgupr.btcontrol.ACTION_CONNECT
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:34:17-80
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:35:17-80
 	android:name
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:34:25-77
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:35:25-77
 action#com.saihgupr.btcontrol.ACTION_DISCONNECT
-ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:35:17-83
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:36:17-83
 	android:name
-		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:35:25-80
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:36:25-80
+action#android.intent.action.BOOT_COMPLETED
+ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:37:17-79
+	android:name
+		ADDED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:37:25-76
 uses-sdk
 INJECTED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml
