@@ -34,7 +34,7 @@
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
         android:extractNativeLibs="false"
-        android:label="BT Control"
+        android:label="AndroidTVBluetooth"
         android:theme="@style/Theme.AppCompat" >
         <activity
             android:name="com.saihgupr.btcontrol.MainActivity"

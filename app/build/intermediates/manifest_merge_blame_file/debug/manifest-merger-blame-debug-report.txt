@@ -10,32 +10,32 @@
 10
 11    <!-- Legacy Permissions -->
 12    <uses-permission android:name="android.permission.BLUETOOTH" />
-12-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:6:5-68
-12-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:6:22-65
+12-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:6:5-68
+12-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:6:22-65
 13    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-13-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:7:5-74
-13-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:7:22-71
+13-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:7:5-74
+13-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:7:22-71
 14
 15    <!-- Android 12+ Permissions -->
 16    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-16-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:10:5-76
-16-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:10:22-73
+16-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:10:5-76
+16-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:10:22-73
 17    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-17-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:11:5-81
-17-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:11:22-78
+17-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:11:5-81
+17-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:11:22-78
 18
 19    <uses-feature
-19-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:5-87
+19-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:5-87
 20        android:name="android.software.leanback"
-20-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:19-59
+20-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:19-59
 21        android:required="false" />
-21-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:60-84
+21-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:12:60-84
 22    <uses-feature
-22-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:13:5-90
+22-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:13:5-90
 23        android:name="android.hardware.touchscreen"
-23-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:13:19-62
+23-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:13:19-62
 24        android:required="false" />
-24-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:13:63-87
+24-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:13:63-87
 25
 26    <permission
 26-->[androidx.core:core:1.9.0] /Users/chrislapointe/.gradle/caches/transforms-4/566acc714c8179f607f6e5bc825559b8/transformed/core-1.9.0/AndroidManifest.xml:22:5-24:47
@@ -49,57 +49,57 @@
 30-->[androidx.core:core:1.9.0] /Users/chrislapointe/.gradle/caches/transforms-4/566acc714c8179f607f6e5bc825559b8/transformed/core-1.9.0/AndroidManifest.xml:26:22-94
 31
 32    <application
-32-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:15:5-41:19
+32-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:15:5-41:19
 33        android:allowBackup="true"
-33-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:16:9-35
+33-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:16:9-35
 34        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 34-->[androidx.core:core:1.9.0] /Users/chrislapointe/.gradle/caches/transforms-4/566acc714c8179f607f6e5bc825559b8/transformed/core-1.9.0/AndroidManifest.xml:28:18-86
 35        android:debuggable="true"
 36        android:extractNativeLibs="false"
-37        android:label="BT Control"
-37-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:17:9-35
+37        android:label="AndroidTVBluetooth"
+37-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:17:9-43
 38        android:theme="@style/Theme.AppCompat" >
-38-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:18:9-47
+38-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:18:9-47
 39        <activity
-39-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:20:9-28:20
+39-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:20:9-28:20
 40            android:name="com.saihgupr.btcontrol.MainActivity"
-40-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:21:13-41
+40-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:21:13-41
 41            android:exported="true" >
-41-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:22:13-36
+41-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:22:13-36
 42            <intent-filter>
-42-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:23:13-27:29
+42-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:23:13-27:29
 43                <action android:name="android.intent.action.MAIN" />
-43-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:24:17-69
-43-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:24:25-66
+43-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:24:17-69
+43-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:24:25-66
 44
 45                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-45-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:25:17-86
-45-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:25:27-83
+45-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:25:17-86
+45-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:25:27-83
 46                <category android:name="android.intent.category.LAUNCHER" />
-46-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:26:17-77
-46-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:26:27-74
+46-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:26:17-77
+46-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:26:27-74
 47            </intent-filter>
 48        </activity>
 49
 50        <receiver
-50-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:30:9-39:20
+50-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:30:9-39:20
 51            android:name="com.saihgupr.btcontrol.BluetoothControlReceiver"
-51-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:31:13-53
+51-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:31:13-53
 52            android:enabled="true"
-52-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:32:13-35
+52-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:32:13-35
 53            android:exported="true" >
-53-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:33:13-36
+53-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:33:13-36
 54            <intent-filter>
-54-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:34:13-38:29
+54-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:34:13-38:29
 55                <action android:name="com.saihgupr.btcontrol.ACTION_CONNECT" />
-55-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:35:17-80
-55-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:35:25-77
+55-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:35:17-80
+55-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:35:25-77
 56                <action android:name="com.saihgupr.btcontrol.ACTION_DISCONNECT" />
-56-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:36:17-83
-56-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:36:25-80
+56-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:36:17-83
+56-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:36:25-80
 57                <action android:name="android.intent.action.BOOT_COMPLETED" />
-57-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:37:17-79
-57-->/Users/chrislapointe/Projects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:37:25-76
+57-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:37:17-79
+57-->/Users/chrislapointe/Projects/CurrentProjects/AndroidTVBluetooth/app/src/main/AndroidManifest.xml:37:25-76
 58            </intent-filter>
 59        </receiver>
 60

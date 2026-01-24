@@ -43,7 +43,7 @@ adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_DISCONNECT \
 ### 1. Download & Install APK
 Download the latest APK from the [Releases](https://github.com/saihgupr/AndroidTVBluetooth/releases) page and install it:
 ```bash
-adb install -r path/to/app-debug.apk
+adb install -r path/to/AndroidTVBluetooth.apk
 ```
 
 ### 2. Grant Permissions
@@ -53,7 +53,7 @@ adb shell pm grant com.saihgupr.btcontrol android.permission.BLUETOOTH_CONNECT
 ```
 
 ### 3. Initialize
-Launch the **BT Control** app manually on your TV **one time** to move it out of the system's "stopped" state. You can close it immediately after.
+Launch the **AndroidTVBluetooth** app manually on your TV **one time** to move it out of the system's "stopped" state. You can close it immediately after.
 
 ---
 

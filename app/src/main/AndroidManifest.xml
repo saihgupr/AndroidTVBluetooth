@@ -14,7 +14,7 @@
 
     <application
         android:allowBackup="true"
-        android:label="BT Control"
+        android:label="AndroidTVBluetooth"
         android:theme="@style/Theme.AppCompat">
 
         <activity
