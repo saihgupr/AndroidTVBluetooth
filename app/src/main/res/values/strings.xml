@@ -7,6 +7,14 @@
     <string name="status_enable_hint">Enable Bluetooth in Settings</string>
     <string name="status_permission_required">Permission Required</string>
     <string name="status_permission_hint">Grant BLUETOOTH_CONNECT via ADB</string>
+
+    <string name="paired_devices">Paired Devices</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="connect_device_description">Connect %1$s</string>
+    <string name="disconnect_device_description">Disconnect %1$s</string>
+    <string name="unknown_device">Unknown Device</string>
+
     <string name="instructions_header">ADB Usage:</string>
     <string name="adb_example">
         $ adb shell am broadcast \

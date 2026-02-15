@@ -1,6 +1,7 @@
 package com.saihgupr.btcontrol;
 
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
         BluetoothDevice device = devices.get(position);
         Context context = holder.itemView.getContext();
-
         String deviceName = "Unknown Device";
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
             ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
@@ -62,6 +62,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
         holder.nameText.setText(deviceName);
         holder.addressText.setText(device.getAddress());
+
+        holder.connectButton.setContentDescription(context.getString(R.string.connect_device_description, deviceName));
+        holder.disconnectButton.setContentDescription(context.getString(R.string.disconnect_device_description, deviceName));
 
         holder.connectButton.setOnClickListener(v -> {
             if (listener != null) listener.onConnect(device);
