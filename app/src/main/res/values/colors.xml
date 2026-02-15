@@ -3,29 +3,29 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Premium Dark Theme Palette (Slate & Blue) -->
-    <color name="colorPrimary">#3B82F6</color>
-    <color name="colorPrimaryVariant">#2563EB</color>
+    <!-- Apple-like Dark Theme Palette -->
+    <color name="colorPrimary">#0A84FF</color> <!-- System Blue -->
+    <color name="colorPrimaryVariant">#007AFF</color>
     <color name="colorOnPrimary">#FFFFFF</color>
 
-    <color name="colorSecondary">#10B981</color> <!-- Emerald -->
-    <color name="colorOnSecondary">#FFFFFF</color>
+    <color name="colorSecondary">#30D158</color> <!-- System Green -->
+    <color name="colorOnSecondary">#000000</color>
 
-    <color name="colorBackground">#0F172A</color> <!-- Slate 900 -->
-    <color name="colorOnBackground">#F1F5F9</color> <!-- Slate 100 -->
+    <color name="colorBackground">#000000</color> <!-- Pure Black for OLED/TV or #1C1C1E -->
+    <color name="colorOnBackground">#FFFFFF</color>
 
-    <color name="colorSurface">#1E293B</color> <!-- Slate 800 -->
-    <color name="colorOnSurface">#F8FAFC</color> <!-- Slate 50 -->
+    <color name="colorSurface">#1C1C1E</color> <!-- System Gray 6 / Card -->
+    <color name="colorOnSurface">#FFFFFF</color>
 
-    <color name="colorError">#EF4444</color>
+    <color name="colorError">#FF453A</color> <!-- System Red -->
     <color name="colorOnError">#FFFFFF</color>
 
     <!-- Status Colors -->
-    <color name="status_ready">#10B981</color> <!-- Emerald -->
-    <color name="status_disabled">#64748B</color> <!-- Slate 500 -->
-    <color name="status_error">#F87171</color> <!-- Soft Red -->
+    <color name="status_ready">#32D74B</color> <!-- Green -->
+    <color name="status_disabled">#8E8E93</color> <!-- Gray -->
+    <color name="status_error">#FF453A</color> <!-- Red -->
     
     <!-- Glass/Card Overlays -->
-    <color name="card_overlay">#2D3748</color>
-    <color name="text_muted">#94A3B8</color>
+    <color name="card_overlay">#2C2C2E</color> <!-- Slightly lighter for borders -->
+    <color name="text_muted">#98989D</color> <!-- System Gray -->
 </resources>
