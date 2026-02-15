@@ -80,7 +80,9 @@
             android:textSize="13sp"
             app:cornerRadius="20dp"
             app:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/colorOnPrimary" />
+            android:textColor="@color/colorOnPrimary"
+            android:focusable="false"
+            android:clickable="false" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_disconnect"
@@ -93,6 +95,8 @@
             android:textSize="13sp"
             app:cornerRadius="20dp"
             android:textColor="@color/status_error"
+            android:focusable="false"
+            android:clickable="false"
             android:visibility="gone"
             tools:visibility="visible" />
 
