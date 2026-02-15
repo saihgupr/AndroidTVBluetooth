@@ -21,6 +21,7 @@ public class BluetoothManagerHelper {
     private BluetoothAdapter mAdapter;
     private BluetoothProfile mA2dpProfile;
     private BluetoothProfile mHeadsetProfile;
+    private BluetoothProfile mInputDeviceProfile;
     
     // Lock to ensure we don't try to use profiles before they are ready
     private final Object mProfileLock = new Object();
@@ -37,7 +38,7 @@ public class BluetoothManagerHelper {
             mListeners.add(listener);
             // If already connected, notify immediately
             synchronized (mProfileLock) {
-                if (mA2dpProfile != null || mHeadsetProfile != null) {
+                if (mA2dpProfile != null || mHeadsetProfile != null || mInputDeviceProfile != null) {
                     listener.onProxyConnected();
                 }
             }
@@ -107,6 +108,26 @@ public class BluetoothManagerHelper {
                 notifyProxyDisconnected();
             }
         }, BluetoothProfile.HEADSET);
+
+        // Get Input Device Profile (HID) - API 28+ uses HID_DEVICE/HID_HOST but INPUT_DEVICE is standard
+        mAdapter.getProfileProxy(context, new BluetoothProfile.ServiceListener() {
+            @Override
+            public void onServiceConnected(int profile, BluetoothProfile proxy) {
+                synchronized (mProfileLock) {
+                    mInputDeviceProfile = proxy;
+                    Log.d(TAG, "Input Device Profile Connected");
+                }
+                notifyProxyConnected();
+            }
+
+            @Override
+            public void onServiceDisconnected(int profile) {
+                synchronized (mProfileLock) {
+                    mInputDeviceProfile = null;
+                }
+                notifyProxyDisconnected();
+            }
+        }, 4); // BluetoothProfile.INPUT_DEVICE is 4, using constant for compatibility
     }
 
     public void connect(String address) {
@@ -196,11 +217,12 @@ public class BluetoothManagerHelper {
         synchronized (mProfileLock) {
             int a2dpState = mA2dpProfile != null ? mA2dpProfile.getConnectionState(device) : BluetoothProfile.STATE_DISCONNECTED;
             int hfpState = mHeadsetProfile != null ? mHeadsetProfile.getConnectionState(device) : BluetoothProfile.STATE_DISCONNECTED;
+            int inputState = mInputDeviceProfile != null ? mInputDeviceProfile.getConnectionState(device) : BluetoothProfile.STATE_DISCONNECTED;
             
-            if (a2dpState == BluetoothProfile.STATE_CONNECTED || hfpState == BluetoothProfile.STATE_CONNECTED) {
+            if (a2dpState == BluetoothProfile.STATE_CONNECTED || hfpState == BluetoothProfile.STATE_CONNECTED || inputState == BluetoothProfile.STATE_CONNECTED) {
                 return BluetoothProfile.STATE_CONNECTED;
             }
-            if (a2dpState == BluetoothProfile.STATE_CONNECTING || hfpState == BluetoothProfile.STATE_CONNECTING) {
+            if (a2dpState == BluetoothProfile.STATE_CONNECTING || hfpState == BluetoothProfile.STATE_CONNECTING || inputState == BluetoothProfile.STATE_CONNECTING) {
                 return BluetoothProfile.STATE_CONNECTING;
             }
             return BluetoothProfile.STATE_DISCONNECTED;
@@ -250,6 +272,10 @@ public class BluetoothManagerHelper {
                 
                 if (mHeadsetProfile != null) {
                     invokeHiddenMethod(mHeadsetProfile, methodName, device);
+                }
+
+                if (mInputDeviceProfile != null) {
+                    invokeHiddenMethod(mInputDeviceProfile, methodName, device);
                 }
             }
             if (onComplete != null) {
