@@ -1,11 +1,8 @@
 package com.saihgupr.btcontrol;
 
 import android.bluetooth.BluetoothDevice;
-<<<<<<< HEAD
 import android.content.Context;
-=======
 import android.bluetooth.BluetoothProfile;
->>>>>>> 346da36 (Connects and disconnect correctly)
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
