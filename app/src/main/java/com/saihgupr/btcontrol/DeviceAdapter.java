@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder> {
 
+    private static final String TAG = "DeviceAdapter";
     private List<BluetoothDevice> devices = new ArrayList<>();
     private OnDeviceActionListener listener;
     private BluetoothManagerHelper btHelper;
@@ -93,13 +94,27 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         holder.connectButton.setContentDescription(context.getString(R.string.connect_device_description, deviceName));
         holder.disconnectButton.setContentDescription(context.getString(R.string.disconnect_device_description, deviceName));
 
-        holder.connectButton.setOnClickListener(v -> {
-            if (listener != null) listener.onConnect(device);
+        // Make the entire card clickable for better TV navigation
+        holder.itemView.setFocusable(true);
+        holder.itemView.setClickable(true);
+        holder.itemView.setOnClickListener(v -> {
+            if (isConnected) {
+                android.util.Log.d(TAG, "Card clicked (Disconnect): " + device.getName());
+                if (listener != null) listener.onDisconnect(device);
+            } else if (!isConnecting) {
+                android.util.Log.d(TAG, "Card clicked (Connect): " + device.getName());
+                if (listener != null) listener.onConnect(device);
+            }
         });
-
-        holder.disconnectButton.setOnClickListener(v -> {
-            if (listener != null) listener.onDisconnect(device);
-        });
+        
+        // Remove individual button click listeners to avoid conflicts
+        holder.connectButton.setOnClickListener(null);
+        holder.connectButton.setClickable(false);
+        holder.connectButton.setFocusable(false);
+        
+        holder.disconnectButton.setOnClickListener(null);
+        holder.disconnectButton.setClickable(false);
+        holder.disconnectButton.setFocusable(false);
     }
 
     @Override
