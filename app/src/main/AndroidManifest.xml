@@ -15,7 +15,9 @@
     <application
         android:allowBackup="true"
         android:label="AndroidTVBluetooth"
-        android:theme="@style/Theme.AppCompat">
+        android:icon="@mipmap/ic_launcher"
+        android:banner="@drawable/banner"
+        android:theme="@style/Theme.AndroidTVBluetooth">
 
         <activity
             android:name=".MainActivity"
