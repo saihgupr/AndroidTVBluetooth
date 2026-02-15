@@ -77,6 +77,7 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:src="@drawable/ic_bluetooth"
+                android:importantForAccessibility="no"
                 app:tint="@color/status_ready" />
 
             <TextView
@@ -106,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Paired Devices"
+        android:text="@string/paired_devices"
         android:textColor="@color/colorOnBackground"
         android:textSize="18sp"
         android:textStyle="bold"
