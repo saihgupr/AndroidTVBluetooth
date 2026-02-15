@@ -1,11 +1,8 @@
 package com.saihgupr.btcontrol;
 
 import android.bluetooth.BluetoothDevice;
-<<<<<<< HEAD
-import android.content.Context;
-=======
 import android.bluetooth.BluetoothProfile;
->>>>>>> 346da36 (Connects and disconnect correctly)
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +13,6 @@ import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import androidx.core.content.ContextCompat;
@@ -93,6 +89,17 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
         holder.connectButton.setContentDescription(context.getString(R.string.connect_device_description, deviceName));
         holder.disconnectButton.setContentDescription(context.getString(R.string.disconnect_device_description, deviceName));
+
+        // Set content description on the card itself for TalkBack accessibility
+        String actionDescription;
+        if (isConnected) {
+            actionDescription = context.getString(R.string.disconnect_device_description, deviceName);
+        } else if (isConnecting) {
+            actionDescription = context.getString(R.string.status_connecting) + " " + deviceName;
+        } else {
+            actionDescription = context.getString(R.string.connect_device_description, deviceName);
+        }
+        holder.itemView.setContentDescription(actionDescription);
 
         // Make the entire card clickable for better TV navigation
         holder.itemView.setFocusable(true);

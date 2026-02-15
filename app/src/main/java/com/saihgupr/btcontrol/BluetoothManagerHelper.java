@@ -256,53 +256,42 @@ public class BluetoothManagerHelper {
 
     private void performAction(BluetoothDevice device, String methodName, Runnable onComplete) {
         new Thread(() -> {
-<<<<<<< HEAD
-            // Wait for A2DP profile with timeout (2000ms total, same as original 10 * 200ms)
-            // Using wait/notify avoids unnecessary sleep latency.
-=======
             try {
-                // Wait for profiles to be bound if necessary
-            int retries = 0;
-            while ((mA2dpProfile == null) && retries < 10) {
-                 try { Thread.sleep(200); } catch (InterruptedException e) {}
-                 retries++;
-            }
-            
->>>>>>> 346da36 (Connects and disconnect correctly)
-            synchronized (mProfileLock) {
-                long timeout = 2000;
-                long start = System.currentTimeMillis();
-                while (mA2dpProfile == null) {
-                    long elapsed = System.currentTimeMillis() - start;
-                    if (elapsed >= timeout) break;
-                    try {
-                        mProfileLock.wait(timeout - elapsed);
-                    } catch (InterruptedException e) {
-                        break;
+                // Wait for A2DP profile with timeout (2000ms total)
+                synchronized (mProfileLock) {
+                    long timeout = 2000;
+                    long start = System.currentTimeMillis();
+                    while (mA2dpProfile == null) {
+                        long elapsed = System.currentTimeMillis() - start;
+                        if (elapsed >= timeout) break;
+                        try {
+                            mProfileLock.wait(timeout - elapsed);
+                        } catch (InterruptedException e) {
+                            break;
+                        }
+                    }
+
+                    if (mA2dpProfile != null) {
+                        invokeHiddenMethod(mA2dpProfile, methodName, device);
+                    } else if ("connect".equals(methodName)) {
+                        Log.w(TAG, "A2DP Profile not ready after wait");
+                    }
+
+                    if (mHeadsetProfile != null) {
+                        invokeHiddenMethod(mHeadsetProfile, methodName, device);
+                    }
+
+                    if (mInputDeviceProfile != null) {
+                        invokeHiddenMethod(mInputDeviceProfile, methodName, device);
                     }
                 }
-
-                if (mA2dpProfile != null) {
-                    invokeHiddenMethod(mA2dpProfile, methodName, device);
-                } else if (methodName.equals("connect")) {
-                    Log.w(TAG, "A2DP Profile not ready after wait");
+                if (onComplete != null) {
+                    onComplete.run();
                 }
-
-                if (mHeadsetProfile != null) {
-                    invokeHiddenMethod(mHeadsetProfile, methodName, device);
-                }
-
-                if (mInputDeviceProfile != null) {
-                    invokeHiddenMethod(mInputDeviceProfile, methodName, device);
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (onComplete != null) onComplete.run();
             }
-            if (onComplete != null) {
-                onComplete.run();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (onComplete != null) onComplete.run();
-        }
         }).start();
     }
 
