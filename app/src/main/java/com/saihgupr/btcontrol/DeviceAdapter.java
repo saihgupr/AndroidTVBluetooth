@@ -1,7 +1,6 @@
 package com.saihgupr.btcontrol;
 
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import androidx.core.content.ContextCompat;
 
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder> {
 
@@ -42,7 +46,16 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
         BluetoothDevice device = devices.get(position);
         Context context = holder.itemView.getContext();
-        String deviceName = device.getName() != null ? device.getName() : context.getString(R.string.unknown_device);
+        String deviceName = context.getString(R.string.unknown_device);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
+            ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
+            try {
+                String name = device.getName();
+                if (name != null) deviceName = name;
+            } catch (SecurityException e) {
+                // Keep default localized "Unknown Device"
+            }
+        }
 
         holder.nameText.setText(deviceName);
         holder.addressText.setText(device.getAddress());
