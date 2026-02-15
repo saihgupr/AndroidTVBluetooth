@@ -10,10 +10,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.Collections;
+import java.util.List;
+import android.bluetooth.BluetoothProfile;
 import java.util.ArrayList;
 import java.util.Set;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BluetoothManagerHelper.OnProfileProxyListener {
 
     private ImageView statusIcon;
     private TextView statusTitle;
@@ -21,6 +28,19 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView devicesRecycler;
     private DeviceAdapter deviceAdapter;
     private BluetoothManagerHelper btHelper;
+    
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action) ||
+                BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action) ||
+                BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+                updateDeviceList();
+                updateStatus();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +53,7 @@ public class MainActivity extends AppCompatActivity {
         devicesRecycler = findViewById(R.id.devices_recycler);
 
         btHelper = new BluetoothManagerHelper(this);
-        setupRecyclerView();
-    }
-
-    private void setupRecyclerView() {
-        deviceAdapter = new DeviceAdapter(new DeviceAdapter.OnDeviceActionListener() {
+        deviceAdapter = new DeviceAdapter(btHelper, new DeviceAdapter.OnDeviceActionListener() {
             @Override
             public void onConnect(BluetoothDevice device) {
                 btHelper.connect(device.getAddress());
@@ -48,6 +64,14 @@ public class MainActivity extends AppCompatActivity {
                 btHelper.disconnect(device.getAddress());
             }
         });
+
+        btHelper.addProfileProxyListener(this);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(mReceiver, filter);
 
         devicesRecycler.setLayoutManager(new LinearLayoutManager(this));
         devicesRecycler.setAdapter(deviceAdapter);
@@ -65,7 +89,25 @@ public class MainActivity extends AppCompatActivity {
         if (adapter != null && adapter.isEnabled()) {
             try {
                 Set<BluetoothDevice> pairedDevices = adapter.getBondedDevices();
-                deviceAdapter.setDevices(new ArrayList<>(pairedDevices));
+                List<BluetoothDevice> deviceList = new ArrayList<>(pairedDevices);
+                
+                // Sort by connection state: Connected/Connecting first, then alphabetically
+                Collections.sort(deviceList, (d1, d2) -> {
+                    int s1 = btHelper.getConnectionState(d1);
+                    int s2 = btHelper.getConnectionState(d2);
+                    
+                    boolean c1 = (s1 == BluetoothProfile.STATE_CONNECTED || s1 == BluetoothProfile.STATE_CONNECTING);
+                    boolean c2 = (s2 == BluetoothProfile.STATE_CONNECTED || s2 == BluetoothProfile.STATE_CONNECTING);
+                    
+                    if (c1 && !c2) return -1;
+                    if (!c1 && c2) return 1;
+                    
+                    String n1 = d1.getName() != null ? d1.getName() : "";
+                    String n2 = d2.getName() != null ? d2.getName() : "";
+                    return n1.compareToIgnoreCase(n2);
+                });
+                
+                deviceAdapter.setDevices(deviceList);
             } catch (SecurityException e) {
                 deviceAdapter.setDevices(new ArrayList<>());
             }
@@ -113,5 +155,23 @@ public class MainActivity extends AppCompatActivity {
         statusTitle.setText(R.string.status_permission_required);
         statusSubtitle.setText(R.string.status_permission_hint);
         statusSubtitle.setTextColor(color);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (btHelper != null) {
+            btHelper.removeProfileProxyListener(this);
+        }
+        unregisterReceiver(mReceiver);
+    }
+    
+    @Override
+    public void onProxyConnected() {
+        runOnUiThread(this::updateDeviceList);
+    }
+
+    @Override
+    public void onProxyDisconnected() {
+        runOnUiThread(this::updateDeviceList);
     }
 }

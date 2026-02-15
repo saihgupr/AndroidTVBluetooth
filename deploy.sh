@@ -30,6 +30,9 @@ if [ $? -ne 0 ]; then
     adb -s $TV_IP install $APK_PATH
 fi
 
+echo "--- Granting Permissions ---"
+adb -s $TV_IP shell pm grant $PACKAGE_NAME android.permission.BLUETOOTH_CONNECT
+
 echo "--- Launching App ---"
 adb -s $TV_IP shell am start -n $PACKAGE_NAME/$ACTIVITY_NAME
 
