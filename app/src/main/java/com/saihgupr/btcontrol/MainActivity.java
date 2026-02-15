@@ -91,8 +91,14 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
                 Set<BluetoothDevice> pairedDevices = adapter.getBondedDevices();
                 List<BluetoothDevice> deviceList = new ArrayList<>(pairedDevices);
                 
-                // Sort by connection state: Connected/Connecting first, then alphabetically
+                // Sort by recency, then connection state, then alphabetically
                 Collections.sort(deviceList, (d1, d2) -> {
+                    // 1. Sort by last used timestamp (most recent first)
+                    long t1 = DevicePrefs.getLastUsed(getApplicationContext(), d1.getAddress());
+                    long t2 = DevicePrefs.getLastUsed(getApplicationContext(), d2.getAddress());
+                    if (t1 != t2) return Long.compare(t2, t1);
+
+                    // 2. Sort by connection state: Connected/Connecting first
                     int s1 = btHelper.getConnectionState(d1);
                     int s2 = btHelper.getConnectionState(d2);
                     
@@ -102,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
                     if (c1 && !c2) return -1;
                     if (!c1 && c2) return 1;
                     
+                    // 3. Alphabetical fallback
                     String n1 = d1.getName() != null ? d1.getName() : "";
                     String n2 = d2.getName() != null ? d2.getName() : "";
                     return n1.compareToIgnoreCase(n2);

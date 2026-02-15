@@ -76,3 +76,7 @@ This will print a list of paired devices if your specified name was not found.
 ## Support the Project
 
 Please consider giving it a ⭐ on [GitHub](https://github.com/saihgupr/AndroidTVBluetooth) or [buying me a coffee](https://ko-fi.com/saihgupr)! It helps others find the project and keeps me motivated to maintain it.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

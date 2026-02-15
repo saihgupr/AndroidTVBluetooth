@@ -154,6 +154,7 @@ public class BluetoothManagerHelper {
         BluetoothDevice device = mAdapter.getRemoteDevice(address);
         Log.i(TAG, "Attempting to connect to: " + device.getName() + " [" + address + "]");
 
+        DevicePrefs.updateLastUsed(mContext, address);
         performAction(device, "connect", onComplete);
     }
 
@@ -194,6 +195,7 @@ public class BluetoothManagerHelper {
         BluetoothDevice device = mAdapter.getRemoteDevice(address);
         Log.i(TAG, "Attempting to disconnect: " + device.getName() + " [" + address + "]");
         
+        DevicePrefs.updateLastUsed(mContext, address);
         performAction(device, "disconnect", onComplete);
     }
 
