@@ -34,13 +34,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateStatus() {
-        // Check for runtime permission on Android 12+
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                setPermissionRequiredState();
-                return;
-            }
-        }
+        // Check for runtime permission only if it throws during execution
+        // Some Android TV versions/ADB states allow access without explicit check for isEnabled()
 
         try {
             BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
