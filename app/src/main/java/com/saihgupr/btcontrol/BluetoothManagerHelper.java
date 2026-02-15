@@ -5,12 +5,19 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.util.Log;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import androidx.core.content.ContextCompat;
+import android.annotation.SuppressLint;
 
 import java.lang.reflect.Method;
 
+@SuppressLint("MissingPermission")
 public class BluetoothManagerHelper {
 
     private static final String TAG = "BtManagerHelper";
+    private Context mContext;
     private BluetoothAdapter mAdapter;
     private BluetoothProfile mA2dpProfile;
     private BluetoothProfile mHeadsetProfile;
@@ -19,9 +26,15 @@ public class BluetoothManagerHelper {
     private final Object mProfileLock = new Object();
 
     public BluetoothManagerHelper(Context context) {
+        mContext = context;
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mAdapter == null) {
             Log.e(TAG, "Bluetooth not supported on this device");
+            return;
+        }
+
+        if (!hasPermission()) {
+            Log.e(TAG, "Missing BLUETOOTH_CONNECT permission during init");
             return;
         }
 
@@ -63,6 +76,10 @@ public class BluetoothManagerHelper {
     }
 
     public void connect(String address) {
+        if (!hasPermission()) {
+            Log.e(TAG, "Missing BLUETOOTH_CONNECT permission");
+            return;
+        }
         if (address == null) return;
         if (mAdapter == null || !BluetoothAdapter.checkBluetoothAddress(address)) {
             Log.e(TAG, "Invalid address or BT not supported: " + address);
@@ -86,6 +103,10 @@ public class BluetoothManagerHelper {
     }
 
     public void disconnect(String address) {
+        if (!hasPermission()) {
+            Log.e(TAG, "Missing BLUETOOTH_CONNECT permission");
+            return;
+        }
         if (address == null) return;
         if (mAdapter == null || !BluetoothAdapter.checkBluetoothAddress(address)) {
             Log.e(TAG, "Invalid address: " + address);
@@ -108,6 +129,10 @@ public class BluetoothManagerHelper {
     }
 
     private BluetoothDevice findBondedDeviceByName(String name) {
+        if (!hasPermission()) {
+            Log.e(TAG, "Missing BLUETOOTH_CONNECT permission");
+            return null;
+        }
         if (mAdapter == null || name == null) return null;
         java.util.Set<BluetoothDevice> bonded = mAdapter.getBondedDevices();
         if (bonded == null) return null;
@@ -165,5 +190,13 @@ public class BluetoothManagerHelper {
             Log.e(TAG, "Reflection failed: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private boolean hasPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return ContextCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_CONNECT)
+                    == PackageManager.PERMISSION_GRANTED;
+        }
+        return true;
     }
 }

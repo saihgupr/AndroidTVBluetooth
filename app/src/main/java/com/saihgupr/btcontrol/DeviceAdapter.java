@@ -10,6 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import androidx.core.content.ContextCompat;
 
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder> {
 
@@ -40,7 +45,22 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     @Override
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
         BluetoothDevice device = devices.get(position);
-        holder.nameText.setText(device.getName() != null ? device.getName() : "Unknown Device");
+        Context context = holder.itemView.getContext();
+
+        String deviceName = "Unknown Device";
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
+            ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
+            try {
+                String name = device.getName();
+                if (name != null) deviceName = name;
+            } catch (SecurityException e) {
+                deviceName = "Unknown (Perm)";
+            }
+        } else {
+            deviceName = "Unknown (No Perm)";
+        }
+
+        holder.nameText.setText(deviceName);
         holder.addressText.setText(device.getAddress());
 
         holder.connectButton.setOnClickListener(v -> {

@@ -32,7 +32,9 @@
         <receiver
             android:name=".BluetoothControlReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:permission="android.permission.DUMP">
+            <!-- Restricted to DUMP permission (held by shell/root) to prevent other apps from triggering -->
             <intent-filter>
                 <action android:name="com.saihgupr.btcontrol.ACTION_CONNECT" />
                 <action android:name="com.saihgupr.btcontrol.ACTION_DISCONNECT" />
