@@ -45,6 +45,7 @@ public class BluetoothManagerHelper {
                 synchronized (mProfileLock) {
                     mA2dpProfile = proxy;
                     Log.d(TAG, "A2DP Profile Connected");
+                    mProfileLock.notifyAll();
                 }
             }
 
@@ -154,25 +155,27 @@ public class BluetoothManagerHelper {
 
     private void performAction(BluetoothDevice device, String methodName) {
         new Thread(() -> {
-             // Wait a bit to ensure profiles are bound if app just started (racing condition mitigation)
-            // In a real automated service, the service handles this lifecycle better.
-            // For a one-shot receiver, this is a bit tricky, but often the receiver context is short-lived.
-            // However, getProfileProxy is async.
-            // We might need to wait for onServiceConnected.
-            
-            int retries = 0;
-            while ((mA2dpProfile == null) && retries < 10) {
-                 try { Thread.sleep(200); } catch (InterruptedException e) {}
-                 retries++;
-            }
-            
+            // Wait for A2DP profile with timeout (2000ms total, same as original 10 * 200ms)
+            // Using wait/notify avoids unnecessary sleep latency.
             synchronized (mProfileLock) {
+                long timeout = 2000;
+                long start = System.currentTimeMillis();
+                while (mA2dpProfile == null) {
+                    long elapsed = System.currentTimeMillis() - start;
+                    if (elapsed >= timeout) break;
+                    try {
+                        mProfileLock.wait(timeout - elapsed);
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+                }
+
                 if (mA2dpProfile != null) {
                     invokeHiddenMethod(mA2dpProfile, methodName, device);
                 } else {
                     Log.w(TAG, "A2DP Profile not ready after wait");
                 }
-                
+
                 if (mHeadsetProfile != null) {
                     invokeHiddenMethod(mHeadsetProfile, methodName, device);
                 }
