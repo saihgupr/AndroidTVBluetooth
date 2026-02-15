@@ -11,10 +11,10 @@
     <color name="colorSecondary">#30D158</color> <!-- System Green -->
     <color name="colorOnSecondary">#000000</color>
 
-    <color name="colorBackground">#000000</color> <!-- Pure Black for OLED/TV or #1C1C1E -->
+    <color name="colorBackground">#151517</color> <!-- Rich Dark Gray (Not Pure Black) -->
     <color name="colorOnBackground">#FFFFFF</color>
 
-    <color name="colorSurface">#1C1C1E</color> <!-- System Gray 6 / Card -->
+    <color name="colorSurface">#242426</color> <!-- Slightly lighter for cards -->
     <color name="colorOnSurface">#FFFFFF</color>
 
     <color name="colorError">#FF453A</color> <!-- System Red -->
