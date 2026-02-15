@@ -17,6 +17,10 @@
     <string name="disconnect_device_description">Disconnect %1$s</string>
     <string name="unknown_device">Unknown Device</string>
 
+    <string name="adb_usage_instructions">
+        To connect or disconnect a device via ADB, use the following commands.
+        \n\nTo connect, replace "Headphones_Name" with the exact name of your paired Bluetooth device:
+    </string>
     <string name="instructions_header">ADB Usage:</string>
     <string name="adb_example">
         $ adb shell am broadcast \
