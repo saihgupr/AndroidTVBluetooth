@@ -1,5 +1,7 @@
 # AndroidTVBluetooth
 
+![screenshot](images/20260215101059.png)
+
 A lightweight utility for Android TV that makes it easy to **quick connect/disconnect** paired Bluetooth devices via ADB.
 
 ## Features
