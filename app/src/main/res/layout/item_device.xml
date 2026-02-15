@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="4dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="6dp"
     app:cardBackgroundColor="@color/colorSurface"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp"
-    app:strokeWidth="0dp"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/card_overlay"
     android:focusable="true"
     android:clickable="true">
 
@@ -16,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp"
+        android:padding="16dp"
         android:gravity="center_vertical">
 
         <LinearLayout
@@ -29,20 +31,43 @@
                 android:id="@+id/device_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Device Name"
                 android:textColor="@color/colorOnSurface"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                tools:text="WH-1000XM3" />
 
-            <TextView
-                android:id="@+id/device_address"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="00:00:00:00:00:00"
-                android:textColor="@color/colorOnSurface"
-                android:alpha="0.7"
-                android:textSize="12sp"
-                android:fontFamily="monospace" />
+                android:orientation="horizontal"
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/device_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_muted"
+                    android:textSize="13sp"
+                    android:fontFamily="monospace"
+                    tools:text="CC:98:8B:F4:97:BA" />
+
+                <TextView
+                    android:id="@+id/status_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/status_tag_bg"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="1dp"
+                    android:textColor="@color/colorBackground"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="CONNECTED"
+                    tools:visibility="visible" />
+            </LinearLayout>
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -51,20 +76,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/connect"
-            android:textSize="12sp"
-            app:cornerRadius="4dp" />
+            android:textAllCaps="false"
+            android:textSize="13sp"
+            app:cornerRadius="20dp"
+            app:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorOnPrimary" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_disconnect"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/disconnect"
-            android:textSize="12sp"
-            app:cornerRadius="4dp"
-            app:backgroundTint="@color/status_error"
-            android:textColor="@color/colorOnBackground" />
+            android:textAllCaps="false"
+            android:textSize="13sp"
+            app:cornerRadius="20dp"
+            android:textColor="@color/status_error"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

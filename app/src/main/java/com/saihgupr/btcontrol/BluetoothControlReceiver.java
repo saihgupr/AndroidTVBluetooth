@@ -23,6 +23,8 @@ public class BluetoothControlReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent == null || intent.getAction() == null) return;
         
+        final PendingResult pendingResult = goAsync();
+        
         String action = intent.getAction();
         Log.d(TAG, "Received action: " + action);
 
@@ -35,6 +37,7 @@ public class BluetoothControlReceiver extends BroadcastReceiver {
 
         if (address == null && name == null) {
             Log.e(TAG, "No address or name provided");
+            pendingResult.finish();
             return;
         }
 
@@ -43,12 +46,19 @@ public class BluetoothControlReceiver extends BroadcastReceiver {
             address = address.toUpperCase().replace("-", ":");
         }
 
+        Runnable onComplete = () -> {
+            Log.d(TAG, "Action completed, releasing PendingResult");
+            pendingResult.finish();
+        };
+
         if (ACTION_CONNECT.equals(action)) {
-            if (address != null) sHelper.connect(address);
-            else sHelper.connectByName(name);
+            if (address != null) sHelper.connect(address, onComplete);
+            else sHelper.connectByName(name, onComplete);
         } else if (ACTION_DISCONNECT.equals(action)) {
-            if (address != null) sHelper.disconnect(address);
-            else sHelper.disconnectByName(name);
+            if (address != null) sHelper.disconnect(address, onComplete);
+            else sHelper.disconnectByName(name, onComplete);
+        } else {
+            pendingResult.finish();
         }
     }
 }

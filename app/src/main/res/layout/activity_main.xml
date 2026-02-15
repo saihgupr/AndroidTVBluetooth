@@ -13,14 +13,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="24dp"
+        android:padding="32dp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/ic_bluetooth"
             android:contentDescription="@string/app_name"
             app:tint="@color/colorPrimary" />
@@ -31,8 +31,9 @@
             android:layout_marginStart="16dp"
             android:text="@string/app_title"
             android:textColor="@color/colorOnBackground"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
 
         <TextView
             android:id="@+id/version_text"
@@ -40,11 +41,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:background="@drawable/version_pill_bg"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
-            android:text="v1.0"
-            android:textColor="@color/colorOnSurface"
-            android:textSize="12sp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="2dp"
+            android:text="v1.1"
+            android:textColor="@color/text_muted"
+            android:textSize="11sp"
             android:fontFamily="monospace" />
     </LinearLayout>
 
@@ -53,17 +54,15 @@
         android:id="@+id/status_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="64dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="32dp"
         app:cardBackgroundColor="@color/colorSurface"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
-        app:strokeColor="@color/colorPrimary"
-        app:strokeWidth="0dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/card_overlay"
         app:layout_constraintTop_toBottomOf="@id/header_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.6">
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,8 +73,8 @@
 
             <ImageView
                 android:id="@+id/status_icon"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:src="@drawable/ic_bluetooth"
                 android:importantForAccessibility="no"
                 app:tint="@color/status_ready" />
@@ -84,47 +83,58 @@
                 android:id="@+id/status_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/status_ready"
                 android:textColor="@color/colorOnSurface"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium" />
 
             <TextView
                 android:id="@+id/status_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:text="@string/status_bt_on"
                 android:textColor="@color/status_ready"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.45" />
 
     <!-- Paired Devices Section -->
     <TextView
         android:id="@+id/devices_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="32dp"
         android:text="@string/paired_devices"
-        android:textColor="@color/colorOnBackground"
-        android:textSize="18sp"
+        android:textColor="@color/text_muted"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/status_card"
-        app:layout_constraintStart_toStartOf="@id/status_card" />
+        android:textAllCaps="true"
+        android:letterSpacing="0.1"
+        app:layout_constraintTop_toTopOf="@id/header_layout"
+        app:layout_constraintBottom_toBottomOf="@id/header_layout"
+        app:layout_constraintStart_toEndOf="@id/guideline_vertical" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/devices_recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         android:clipToPadding="false"
         android:paddingBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/devices_header"
-        app:layout_constraintStart_toStartOf="@id/status_card"
-        app:layout_constraintEnd_toEndOf="@id/status_card"
+        app:layout_constraintTop_toBottomOf="@id/header_layout"
+        app:layout_constraintStart_toEndOf="@id/guideline_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_device" />
 

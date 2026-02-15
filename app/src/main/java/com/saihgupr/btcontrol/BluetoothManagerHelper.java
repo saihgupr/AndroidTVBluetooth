@@ -24,17 +24,47 @@ public class BluetoothManagerHelper {
     
     // Lock to ensure we don't try to use profiles before they are ready
     private final Object mProfileLock = new Object();
+    
+    private java.util.concurrent.CopyOnWriteArrayList<OnProfileProxyListener> mListeners = new java.util.concurrent.CopyOnWriteArrayList<>();
+
+    public interface OnProfileProxyListener {
+        void onProxyConnected();
+        void onProxyDisconnected();
+    }
+
+    public void addProfileProxyListener(OnProfileProxyListener listener) {
+        if (listener != null && !mListeners.contains(listener)) {
+            mListeners.add(listener);
+            // If already connected, notify immediately
+            synchronized (mProfileLock) {
+                if (mA2dpProfile != null || mHeadsetProfile != null) {
+                    listener.onProxyConnected();
+                }
+            }
+        }
+    }
+
+    public void removeProfileProxyListener(OnProfileProxyListener listener) {
+        mListeners.remove(listener);
+    }
+
+    private void notifyProxyConnected() {
+        for (OnProfileProxyListener listener : mListeners) {
+            listener.onProxyConnected();
+        }
+    }
+
+    private void notifyProxyDisconnected() {
+        for (OnProfileProxyListener listener : mListeners) {
+            listener.onProxyDisconnected();
+        }
+    }
 
     public BluetoothManagerHelper(Context context) {
         mContext = context;
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mAdapter == null) {
             Log.e(TAG, "Bluetooth not supported on this device");
-            return;
-        }
-
-        if (!hasPermission()) {
-            Log.e(TAG, "Missing BLUETOOTH_CONNECT permission during init");
             return;
         }
 
@@ -47,6 +77,7 @@ public class BluetoothManagerHelper {
                     Log.d(TAG, "A2DP Profile Connected");
                     mProfileLock.notifyAll();
                 }
+                notifyProxyConnected();
             }
 
             @Override
@@ -54,6 +85,7 @@ public class BluetoothManagerHelper {
                 synchronized (mProfileLock) {
                     mA2dpProfile = null;
                 }
+                notifyProxyDisconnected();
             }
         }, BluetoothProfile.A2DP);
 
@@ -65,6 +97,7 @@ public class BluetoothManagerHelper {
                     mHeadsetProfile = proxy;
                     Log.d(TAG, "Headset Profile Connected");
                 }
+                notifyProxyConnected();
             }
 
             @Override
@@ -72,60 +105,106 @@ public class BluetoothManagerHelper {
                 synchronized (mProfileLock) {
                     mHeadsetProfile = null;
                 }
+                notifyProxyDisconnected();
             }
         }, BluetoothProfile.HEADSET);
     }
 
     public void connect(String address) {
+        connect(address, null);
+    }
+
+    public void connect(String address, Runnable onComplete) {
         if (!hasPermission()) {
             Log.e(TAG, "Missing BLUETOOTH_CONNECT permission");
+            if (onComplete != null) onComplete.run();
             return;
         }
-        if (address == null) return;
+        if (address == null) {
+            if (onComplete != null) onComplete.run();
+            return;
+        }
         if (mAdapter == null || !BluetoothAdapter.checkBluetoothAddress(address)) {
             Log.e(TAG, "Invalid address or BT not supported: " + address);
+            if (onComplete != null) onComplete.run();
             return;
         }
 
         BluetoothDevice device = mAdapter.getRemoteDevice(address);
         Log.i(TAG, "Attempting to connect to: " + device.getName() + " [" + address + "]");
 
-        performAction(device, "connect");
+        performAction(device, "connect", onComplete);
     }
 
     public void connectByName(String name) {
+        connectByName(name, null);
+    }
+
+    public void connectByName(String name, Runnable onComplete) {
         BluetoothDevice device = findBondedDeviceByName(name);
         if (device != null) {
             Log.i(TAG, "Found device '" + name + "' -> " + device.getAddress());
-            connect(device.getAddress());
+            connect(device.getAddress(), onComplete);
         } else {
             Log.e(TAG, "Device not found in paired list: " + name);
+            if (onComplete != null) onComplete.run();
         }
     }
 
     public void disconnect(String address) {
+        disconnect(address, null);
+    }
+
+    public void disconnect(String address, Runnable onComplete) {
         if (!hasPermission()) {
             Log.e(TAG, "Missing BLUETOOTH_CONNECT permission");
+            if (onComplete != null) onComplete.run();
             return;
         }
-        if (address == null) return;
+        if (address == null) {
+            if (onComplete != null) onComplete.run();
+            return;
+        }
         if (mAdapter == null || !BluetoothAdapter.checkBluetoothAddress(address)) {
             Log.e(TAG, "Invalid address: " + address);
+            if (onComplete != null) onComplete.run();
             return;
         }
         BluetoothDevice device = mAdapter.getRemoteDevice(address);
         Log.i(TAG, "Attempting to disconnect: " + device.getName() + " [" + address + "]");
         
-        performAction(device, "disconnect");
+        performAction(device, "disconnect", onComplete);
     }
 
     public void disconnectByName(String name) {
+        disconnectByName(name, null);
+    }
+
+    public void disconnectByName(String name, Runnable onComplete) {
         BluetoothDevice device = findBondedDeviceByName(name);
         if (device != null) {
             Log.i(TAG, "Found device '" + name + "' -> " + device.getAddress());
-            disconnect(device.getAddress());
+            disconnect(device.getAddress(), onComplete);
         } else {
             Log.e(TAG, "Device not found in paired list: " + name);
+            if (onComplete != null) onComplete.run();
+        }
+    }
+
+    public int getConnectionState(BluetoothDevice device) {
+        if (!hasPermission() || device == null) return BluetoothProfile.STATE_DISCONNECTED;
+        
+        synchronized (mProfileLock) {
+            int a2dpState = mA2dpProfile != null ? mA2dpProfile.getConnectionState(device) : BluetoothProfile.STATE_DISCONNECTED;
+            int hfpState = mHeadsetProfile != null ? mHeadsetProfile.getConnectionState(device) : BluetoothProfile.STATE_DISCONNECTED;
+            
+            if (a2dpState == BluetoothProfile.STATE_CONNECTED || hfpState == BluetoothProfile.STATE_CONNECTED) {
+                return BluetoothProfile.STATE_CONNECTED;
+            }
+            if (a2dpState == BluetoothProfile.STATE_CONNECTING || hfpState == BluetoothProfile.STATE_CONNECTING) {
+                return BluetoothProfile.STATE_CONNECTING;
+            }
+            return BluetoothProfile.STATE_DISCONNECTED;
         }
     }
 
@@ -153,10 +232,21 @@ public class BluetoothManagerHelper {
         return null;
     }
 
-    private void performAction(BluetoothDevice device, String methodName) {
+    private void performAction(BluetoothDevice device, String methodName, Runnable onComplete) {
         new Thread(() -> {
+<<<<<<< HEAD
             // Wait for A2DP profile with timeout (2000ms total, same as original 10 * 200ms)
             // Using wait/notify avoids unnecessary sleep latency.
+=======
+            try {
+                // Wait for profiles to be bound if necessary
+            int retries = 0;
+            while ((mA2dpProfile == null) && retries < 10) {
+                 try { Thread.sleep(200); } catch (InterruptedException e) {}
+                 retries++;
+            }
+            
+>>>>>>> 346da36 (Connects and disconnect correctly)
             synchronized (mProfileLock) {
                 long timeout = 2000;
                 long start = System.currentTimeMillis();
@@ -172,7 +262,7 @@ public class BluetoothManagerHelper {
 
                 if (mA2dpProfile != null) {
                     invokeHiddenMethod(mA2dpProfile, methodName, device);
-                } else {
+                } else if (methodName.equals("connect")) {
                     Log.w(TAG, "A2DP Profile not ready after wait");
                 }
 
@@ -180,6 +270,13 @@ public class BluetoothManagerHelper {
                     invokeHiddenMethod(mHeadsetProfile, methodName, device);
                 }
             }
+            if (onComplete != null) {
+                onComplete.run();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (onComplete != null) onComplete.run();
+        }
         }).start();
     }
 

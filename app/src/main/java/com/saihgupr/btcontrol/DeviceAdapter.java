@@ -1,7 +1,11 @@
 package com.saihgupr.btcontrol;
 
 import android.bluetooth.BluetoothDevice;
+<<<<<<< HEAD
 import android.content.Context;
+=======
+import android.bluetooth.BluetoothProfile;
+>>>>>>> 346da36 (Connects and disconnect correctly)
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +25,15 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     private List<BluetoothDevice> devices = new ArrayList<>();
     private OnDeviceActionListener listener;
+    private BluetoothManagerHelper btHelper;
 
     public interface OnDeviceActionListener {
         void onConnect(BluetoothDevice device);
         void onDisconnect(BluetoothDevice device);
     }
 
-    public DeviceAdapter(OnDeviceActionListener listener) {
+    public DeviceAdapter(BluetoothManagerHelper btHelper, OnDeviceActionListener listener) {
+        this.btHelper = btHelper;
         this.listener = listener;
     }
 
@@ -63,6 +69,27 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         holder.nameText.setText(deviceName);
         holder.addressText.setText(device.getAddress());
 
+        int state = btHelper.getConnectionState(device);
+        boolean isConnected = (state == BluetoothProfile.STATE_CONNECTED);
+        boolean isConnecting = (state == BluetoothProfile.STATE_CONNECTING);
+
+        if (isConnected) {
+            holder.statusTag.setVisibility(View.VISIBLE);
+            holder.statusTag.setText(R.string.status_connected);
+            holder.connectButton.setVisibility(View.GONE);
+            holder.disconnectButton.setVisibility(View.VISIBLE);
+        } else if (isConnecting) {
+            holder.statusTag.setVisibility(View.VISIBLE);
+            holder.statusTag.setText(R.string.status_connecting);
+            holder.connectButton.setVisibility(View.GONE);
+            holder.disconnectButton.setVisibility(View.VISIBLE);
+            holder.disconnectButton.setEnabled(false);
+        } else {
+            holder.statusTag.setVisibility(View.GONE);
+            holder.connectButton.setVisibility(View.VISIBLE);
+            holder.disconnectButton.setVisibility(View.GONE);
+        }
+
         holder.connectButton.setContentDescription(context.getString(R.string.connect_device_description, deviceName));
         holder.disconnectButton.setContentDescription(context.getString(R.string.disconnect_device_description, deviceName));
 
@@ -83,6 +110,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     static class DeviceViewHolder extends RecyclerView.ViewHolder {
         TextView nameText;
         TextView addressText;
+        TextView statusTag;
         MaterialButton connectButton;
         MaterialButton disconnectButton;
 
@@ -90,6 +118,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             super(itemView);
             nameText = itemView.findViewById(R.id.device_name);
             addressText = itemView.findViewById(R.id.device_address);
+            statusTag = itemView.findViewById(R.id.status_tag);
             connectButton = itemView.findViewById(R.id.btn_connect);
             disconnectButton = itemView.findViewById(R.id.btn_disconnect);
         }
