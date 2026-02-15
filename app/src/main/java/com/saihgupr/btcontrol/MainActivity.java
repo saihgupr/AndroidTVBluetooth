@@ -1,21 +1,26 @@
 package com.saihgupr.btcontrol;
 
-import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
-import android.content.pm.PackageManager;
+import android.bluetooth.BluetoothDevice;
 import android.content.res.ColorStateList;
-import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
     private ImageView statusIcon;
     private TextView statusTitle;
     private TextView statusSubtitle;
+    private RecyclerView devicesRecycler;
+    private DeviceAdapter deviceAdapter;
+    private BluetoothManagerHelper btHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +30,48 @@ public class MainActivity extends AppCompatActivity {
         statusIcon = findViewById(R.id.status_icon);
         statusTitle = findViewById(R.id.status_title);
         statusSubtitle = findViewById(R.id.status_subtitle);
+        devicesRecycler = findViewById(R.id.devices_recycler);
+
+        btHelper = new BluetoothManagerHelper(this);
+        setupRecyclerView();
+    }
+
+    private void setupRecyclerView() {
+        deviceAdapter = new DeviceAdapter(new DeviceAdapter.OnDeviceActionListener() {
+            @Override
+            public void onConnect(BluetoothDevice device) {
+                btHelper.connect(device.getAddress());
+            }
+
+            @Override
+            public void onDisconnect(BluetoothDevice device) {
+                btHelper.disconnect(device.getAddress());
+            }
+        });
+
+        devicesRecycler.setLayoutManager(new LinearLayoutManager(this));
+        devicesRecycler.setAdapter(deviceAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updateStatus();
+        updateDeviceList();
+    }
+
+    private void updateDeviceList() {
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter != null && adapter.isEnabled()) {
+            try {
+                Set<BluetoothDevice> pairedDevices = adapter.getBondedDevices();
+                deviceAdapter.setDevices(new ArrayList<>(pairedDevices));
+            } catch (SecurityException e) {
+                deviceAdapter.setDevices(new ArrayList<>());
+            }
+        } else {
+            deviceAdapter.setDevices(new ArrayList<>());
+        }
     }
 
     private void updateStatus() {

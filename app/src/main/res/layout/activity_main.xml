@@ -100,37 +100,31 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- ADB Instructions Section -->
+    <!-- Paired Devices Section -->
     <TextView
-        android:id="@+id/instructions_header"
+        android:id="@+id/devices_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="@string/instructions_header"
+        android:layout_marginTop="32dp"
+        android:text="Paired Devices"
         android:textColor="@color/colorOnBackground"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/status_card"
         app:layout_constraintStart_toStartOf="@id/status_card" />
 
-    <HorizontalScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/devices_recycler"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/code_block_bg"
-        android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/instructions_header"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/devices_header"
         app:layout_constraintStart_toStartOf="@id/status_card"
-        app:layout_constraintEnd_toEndOf="@id/status_card">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:text="@string/adb_example"
-            android:textColor="@color/colorOnSurface"
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp" />
-    </HorizontalScrollView>
+        app:layout_constraintEnd_toEndOf="@id/status_card"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/item_device" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

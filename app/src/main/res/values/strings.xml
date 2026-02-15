@@ -9,7 +9,8 @@
     <string name="status_permission_hint">Grant BLUETOOTH_CONNECT via ADB</string>
     <string name="instructions_header">ADB Usage:</string>
     <string name="adb_example">
-        $ adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_CONNECT \
+        $ adb shell am broadcast \
+        \n    -a com.saihgupr.btcontrol.ACTION_CONNECT \
         \n    -n com.saihgupr.btcontrol/.BluetoothControlReceiver \
         \n    -e name "Headphones_Name"
     </string>
