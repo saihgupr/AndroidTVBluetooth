@@ -47,16 +47,28 @@ adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_DISCONNECT \
 ## Installation
 
 ### 1. Download & Install APK
-Download the latest APK from the [Releases](https://github.com/saihgupr/AndroidTVBluetooth/releases) page and install it:
+Download the latest APK from the [Releases](https://github.com/saihgupr/AndroidTVBluetooth/releases) page.
+
+**Option A: Via ADB (Fastest)**
 ```bash
 adb install -r path/to/AndroidTVBluetooth.apk
 ```
 
+**Option B: Manual (No PC needed)**
+1. Transfer the APK to your TV (using a USB drive or a "Send Files to TV" app).
+2. Open your TV's **File Explorer** and select the APK to install.
+3. If prompted, allow "Install from Unknown Sources".
+
 ### 2. Grant Permissions
-Required for Android 12+ (Android TV):
+**Option A: Via ADB**
 ```bash
 adb shell pm grant com.saihgupr.btcontrol android.permission.BLUETOOTH_CONNECT
 ```
+
+**Option B: Manual (On TV)**
+1. Go to your TV's **Settings > Apps > See all apps**.
+2. Find **AndroidTV Bluetooth Controller**.
+3. Select **Permissions** and ensure **Nearby Devices** (Bluetooth) is allowed.
 
 ### 3. Initialize
 Launch the **AndroidTVBluetooth** app manually on your TV **one time** to move it out of the system's "stopped" state. You can close it immediately after.
