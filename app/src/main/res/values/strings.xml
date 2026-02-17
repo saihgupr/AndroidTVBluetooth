@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">AndroidTVBluetooth</string>
+    <string name="app_title">AndroidTV Bluetooth Controller</string>
+    <string name="status_ready">Service Ready</string>
+    <string name="status_bt_on">Bluetooth is Enabled</string>
+    <string name="status_bt_off">Bluetooth is OFF</string>
+    <string name="status_enable_hint">Enable Bluetooth in Settings</string>
+    <string name="status_permission_required">Permission Required</string>
+    <string name="status_permission_hint">Grant BLUETOOTH_CONNECT via ADB</string>
+
+    <string name="paired_devices">Paired Devices</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="status_connected">Connected</string>
+    <string name="status_connecting">Connecting…</string>
+    <string name="connect_device_description">Connect %1$s</string>
+    <string name="disconnect_device_description">Disconnect %1$s</string>
+    <string name="unknown_device">Unknown Device</string>
+
+    <string name="adb_usage_instructions">
+        To connect or disconnect a device via ADB, use the following commands.
+        \n\nTo connect, replace "Headphones_Name" with the exact name of your paired Bluetooth device:
+    </string>
+    <string name="instructions_header">ADB Usage:</string>
+    <string name="adb_example">
+        $ adb shell am broadcast \
+        \n    -a com.saihgupr.btcontrol.ACTION_CONNECT \
+        \n    -n com.saihgupr.btcontrol/.BluetoothControlReceiver \
+        \n    -e name "Headphones_Name"
+    </string>
+</resources>

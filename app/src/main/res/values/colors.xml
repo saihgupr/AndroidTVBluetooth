@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Apple-like Dark Theme Palette -->
+    <color name="colorPrimary">#0A84FF</color> <!-- System Blue -->
+    <color name="colorPrimaryVariant">#007AFF</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+
+    <color name="colorSecondary">#30D158</color> <!-- System Green -->
+    <color name="colorOnSecondary">#000000</color>
+
+    <color name="colorBackground">#151517</color> <!-- Rich Dark Gray (Not Pure Black) -->
+    <color name="colorOnBackground">#FFFFFF</color>
+
+    <color name="colorSurface">#242426</color> <!-- Slightly lighter for cards -->
+    <color name="colorOnSurface">#FFFFFF</color>
+
+    <color name="colorError">#FF453A</color> <!-- System Red -->
+    <color name="colorOnError">#FFFFFF</color>
+
+    <!-- Status Colors -->
+    <color name="status_ready">#32D74B</color> <!-- Green -->
+    <color name="status_disabled">#8E8E93</color> <!-- Gray -->
+    <color name="status_error">#FF453A</color> <!-- Red -->
+    
+    <!-- Glass/Card Overlays -->
+    <color name="card_overlay">#2C2C2E</color> <!-- Slightly lighter for borders -->
+    <color name="text_muted">#98989D</color> <!-- System Gray -->
+</resources>

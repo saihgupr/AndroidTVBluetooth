@@ -1,0 +1,25 @@
+# Gradle files
+.gradle/
+build/
+
+# Android Studio files
+.idea/
+*.iml
+.DS_Store
+
+# User-specific configuration
+local.properties
+
+# Captures
+captures/
+
+# Built variants
+*.apk
+*.aar
+
+# Log files
+*.log
+
+# Extra / Local files
+extra/
+.git-backup-*
