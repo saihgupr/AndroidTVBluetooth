@@ -1,6 +1,6 @@
 # AndroidTV Bluetooth Controller
 
-![screenshot](images/20260215101059.png)
+![screenshot](images/20261119114559.png)
 
 A lightweight utility for Android TV and Android phones that gives you a **1-click UI** to connect/disconnect Bluetooth devices, or complete **ADB automation** support.
 
