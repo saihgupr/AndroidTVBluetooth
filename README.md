@@ -11,6 +11,8 @@ A lightweight utility for Android TV and Android phones that gives you a **1-cli
 - **Battery Percentage Display:** Real-time battery indicator on device cards with dynamic health status color coding.
 - **Safe Startup Volume:** Automatically set headphone media volume to a comfortable level (e.g. 30%, 40%, 50%) upon connection to protect your hearing.
 - **Remote Button Mapping (QuickConnect):** Map any button on your Shield/TV remote (via Button Mapper) directly to `QuickConnectActivity` to connect headphones in the background without opening the main UI.
+- **Sony Noise Control:** Switch a Sony headset between noise cancelling, ambient sound and off from the app.
+- **Mute Button Remap:** A single mute press toggles noise cancelling and transparency on the headset, then restores the TV volume.
 - **Mobile Quick Settings Tile & Widget:** Pull down the notification shade or tap a 1x1 Home Screen widget to toggle connection on Android phones and tablets.
 - **ADB Automation:** Trigger connections/disconnections via terminal or automation scripts (Tasker, Home Assistant).
 - **Recent Sorting:** Automatically sorts paired devices by most recently used.
@@ -35,19 +37,40 @@ You can map a button on your Shield or Android TV remote using **Button Mapper**
   ```
   *This instantly connects to your default/recent device in the background and closes cleanly without interrupting your playback.*
 
-### Noise Control (Sony Transparency Toggle)
-On Sony headsets that support it (`WH-1000XM`, `WF-1000XM`, `MDR-`), you can put the headset's noise cancelling / ambient sound mode on a remote button too:
-- **Option 1 (App / Activity):** In Button Mapper, map **mute → single press → Applications > Toggle Transparency** (`com.saihgupr.btcontrol/.ToggleTransparencyActivity`). Single press flips between noise cancelling and transparency, then closes. Leave mute long press unassigned if you still want the TV's normal mute.
-- **Option 2 (ADB / Intent Action):**
+### Noise Control (Sony headphones)
+
+Sony headsets that use the MDR protocol (`WH-1000XM`, `WF-1000XM`, `MDR-`) can change
+noise cancelling and ambient mode straight from the app over Bluetooth. Nothing else is
+installed on the headset.
+
+- **In-app:** the **Noise Control** card in the right column cycles `NC → AMB → OFF`
+  with a single click. The badge shows the last known mode.
+- **Mute button:** a single press of the remote's mute toggles between noise cancelling
+  and transparency. The app notices the mute, switches the headset, then restores the
+  TV volume within about a second.
+
+  For this to work the remote has to send the key to the TV box, not to the TV over IR:
+  **Settings → Remotes & Accessories → your remote → Set up remote buttons →
+  Volume control → Chromecast**. If it is set to the TV, Android never sees the press.
+
+  While this is running, mute no longer mutes the TV. Use the volume keys for silence.
+
+- **Button Mapper (other devices):** map any button to **Toggle Transparency**
+  (`com.saihgupr.btcontrol/.ToggleTransparencyActivity`). It flips the mode and closes
+  without opening the UI.
+- **ADB / automation:**
   ```bash
   adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_ANC \
     -n com.saihgupr.btcontrol/.BluetoothControlReceiver \
     -e mode transparency
   ```
-  `mode` accepts `toggle`, `nc`, `transparency`, `ambient` or `off`, and the extra `name` / `address` targets a specific headset (otherwise your default device is used).
-- **In-app:** the **Noise Control** card in the left panel cycles `NC → AMB → OFF` with a single click. The badge shows the last known mode.
+  `mode` accepts `toggle`, `nc`, `transparency`, `ambient` or `off`, and the extra
+  `name` / `address` targets a specific headset (otherwise your default device is used).
 
-*The first press can take a couple of seconds while the headset link comes up. The card and the ADB action only work with Sony headphones; on anything else they report that no Sony headphones are connected.*
+*Transparency uses the headset's voice focus mode: speech comes through, other ambient
+noise is reduced. The first press can take a couple of seconds while the control link
+comes up. On non-Sony headphones the card and broadcasts report that no Sony headphones
+are connected.*
 
 ### Mobile Quick Settings & Widget
 - **Quick Settings Tile:** Edit your Quick Settings shade on your phone and add the **BT Quick Connect** tile for 1-tap connection toggle and live battery status.

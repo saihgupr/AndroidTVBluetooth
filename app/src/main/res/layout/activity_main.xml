@@ -43,7 +43,7 @@
             android:background="@drawable/version_pill_bg"
             android:paddingHorizontal="10dp"
             android:paddingVertical="2dp"
-            android:text="v1.2"
+            android:text="v1.3"
             android:textColor="@color/text_muted"
 
             android:textSize="11sp"
