@@ -1,5 +1,6 @@
 package com.saihgupr.btcontrol;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
@@ -7,7 +8,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,6 +22,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
@@ -45,9 +51,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
     private MaterialCardView volumeCard;
     private TextView volumeSubtitle;
     private TextView volumeBadge;
-    private MaterialCardView noiseCard;
+    private View noiseCard;
     private TextView noiseSubtitle;
     private TextView noiseBadge;
+    private View muteCard;
+    private TextView muteSubtitle;
+    private SwitchCompat muteSwitch;
     private boolean noiseBusy = false;
     private RecyclerView devicesRecycler;
     private DeviceAdapter deviceAdapter;
@@ -92,6 +101,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
         noiseCard = findViewById(R.id.noise_card);
         noiseSubtitle = findViewById(R.id.noise_subtitle);
         noiseBadge = findViewById(R.id.noise_badge);
+        muteCard = findViewById(R.id.mute_card);
+        muteSubtitle = findViewById(R.id.mute_subtitle);
+        muteSwitch = findViewById(R.id.mute_switch);
         devicesRecycler = findViewById(R.id.devices_recycler);
 
         btHelper = new BluetoothManagerHelper(this);
@@ -127,11 +139,119 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
         setupAutoConnectCard();
         setupVolumeCard();
         setupNoiseCard();
+        setupMuteCard();
+        setupFocusIndicators();
 
         startMuteWatcher();
     }
 
+    /**
+     * TV screens have no hover or touch, so every focusable row needs a visible focus ring.
+     * Cards get a brighter stroke, the rows inside the controls card get a rounded highlight.
+     */
+    private void setupFocusIndicators() {
+        styleCardFocus(autoconnectCard);
+        styleCardFocus(volumeCard);
+        styleRowFocus(noiseCard, true, false);
+        styleRowFocus(muteCard, false, true);
+        devicesRecycler.addOnChildAttachStateChangeListener(
+                new RecyclerView.OnChildAttachStateChangeListener() {
+                    @Override
+                    public void onChildViewAttachedToWindow(@NonNull View view) {
+                        styleCardFocus(view);
+                    }
+
+                    @Override
+                    public void onChildViewDetachedFromWindow(@NonNull View view) {
+                        // Nothing to release.
+                    }
+                });
+    }
+
+    private void styleCardFocus(View view) {
+        if (!(view instanceof MaterialCardView)) return;
+
+        final MaterialCardView card = (MaterialCardView) view;
+        final float density = getResources().getDisplayMetrics().density;
+        final int focusColor = ContextCompat.getColor(this, R.color.colorPrimary);
+        final int idleColor = ContextCompat.getColor(this, R.color.card_overlay);
+        final int focusWidth = Math.round(2 * density);
+        final int idleWidth = Math.round(density);
+
+        card.setOnFocusChangeListener((v, hasFocus) -> {
+            card.setStrokeColor(hasFocus ? focusColor : idleColor);
+            card.setStrokeWidth(hasFocus ? focusWidth : idleWidth);
+        });
+    }
+
+    private void styleRowFocus(View row, boolean roundTop, boolean roundBottom) {
+        if (row == null) return;
+
+        final float density = getResources().getDisplayMetrics().density;
+        final float radius = 14 * density;
+        final float[] radii = new float[]{
+                roundTop ? radius : 0f, roundTop ? radius : 0f,
+                roundTop ? radius : 0f, roundTop ? radius : 0f,
+                roundBottom ? radius : 0f, roundBottom ? radius : 0f,
+                roundBottom ? radius : 0f, roundBottom ? radius : 0f};
+        final GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setCornerRadii(radii);
+        shape.setColor(Color.TRANSPARENT);
+
+        row.setBackground(shape);
+
+        final int focusColor = ContextCompat.getColor(this, R.color.colorPrimary);
+        final int highlightColor = ContextCompat.getColor(this, R.color.card_overlay);
+        final int strokeWidth = Math.round(2 * density);
+
+        row.setOnFocusChangeListener((v, hasFocus) -> {
+            shape.setColor(hasFocus ? highlightColor : Color.TRANSPARENT);
+            shape.setStroke(hasFocus ? strokeWidth : 0,
+                    hasFocus ? focusColor : Color.TRANSPARENT);
+            v.invalidate();
+        });
+    }
+
+    private void setupMuteCard() {
+        if (muteCard == null) return;
+
+        muteCard.setOnClickListener(v ->
+                setMuteRemap(!DevicePrefs.isMuteRemapEnabled(this)));
+        updateMuteUI();
+    }
+
+    private void setMuteRemap(boolean enabled) {
+        DevicePrefs.setMuteRemapEnabled(this, enabled);
+        updateMuteUI();
+        if (enabled) {
+            startMuteWatcher();
+        } else {
+            stopService(new Intent(this, MuteWatcherService.class));
+        }
+    }
+
+    private void updateMuteUI() {
+        if (muteSwitch == null || muteSubtitle == null) return;
+
+        boolean enabled = DevicePrefs.isMuteRemapEnabled(this);
+        muteSwitch.setChecked(enabled);
+        muteSubtitle.setText(enabled
+                ? R.string.mute_remap_desc_on
+                : R.string.mute_remap_desc_off);
+        muteSubtitle.setTextColor(ContextCompat.getColor(this,
+                enabled ? R.color.colorSecondary : R.color.text_muted));
+    }
+
     private void startMuteWatcher() {
+        if (!DevicePrefs.isMuteRemapEnabled(this)) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         try {
             ContextCompat.startForegroundService(this,
                     new Intent(this, MuteWatcherService.class));

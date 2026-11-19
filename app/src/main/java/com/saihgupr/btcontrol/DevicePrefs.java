@@ -11,6 +11,7 @@ public class DevicePrefs {
     private static final String KEY_DEFAULT_DEVICE_NAME = "default_device_name";
     private static final String KEY_STARTUP_VOLUME_ENABLED = "startup_volume_enabled";
     private static final String KEY_STARTUP_VOLUME_PERCENT = "startup_volume_percent";
+    private static final String KEY_MUTE_REMAP_ENABLED = "mute_remap_enabled";
     private static final String KEY_AMBIENT_LEVEL = "ambient_level";
     private static final String KEY_LAST_ANC_MODE = "last_anc_mode";
     private static final int DEFAULT_AMBIENT_LEVEL = 20;
@@ -82,8 +83,7 @@ public class DevicePrefs {
         prefs.edit().putBoolean(KEY_STARTUP_VOLUME_ENABLED, enabled).apply();
     }
 
-    public static int getStartupVolumePercent(Context context) {
-        if (context == null) return 40;
+    public static int getStartupVolumePercent(Context context) {        if (context == null) return 40;
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         return prefs.getInt(KEY_STARTUP_VOLUME_PERCENT, 40);
     }
@@ -118,6 +118,18 @@ public class DevicePrefs {
         if (context == null) return;
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         prefs.edit().putString(KEY_LAST_ANC_MODE, mode).apply();
+    }
+
+    public static boolean isMuteRemapEnabled(Context context) {
+        if (context == null) return false;
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        return prefs.getBoolean(KEY_MUTE_REMAP_ENABLED, false);
+    }
+
+    public static void setMuteRemapEnabled(Context context, boolean enabled) {
+        if (context == null) return;
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(KEY_MUTE_REMAP_ENABLED, enabled).apply();
     }
 
     public static void applyStartupVolume(Context context) {

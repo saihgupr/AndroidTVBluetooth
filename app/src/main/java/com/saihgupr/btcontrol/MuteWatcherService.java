@@ -1,17 +1,22 @@
 package com.saihgupr.btcontrol;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
+
+import androidx.core.content.ContextCompat;
 
 import com.saihgupr.btcontrol.sony.SonyController;
 import com.saihgupr.btcontrol.sony.SonySession;
@@ -53,6 +58,10 @@ public class MuteWatcherService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (!DevicePrefs.isMuteRemapEnabled(this) || !hasBluetoothPermission()) {
+            stopSelf();
+            return;
+        }
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
         startForeground(NOTIFICATION_ID, buildNotification());
@@ -67,7 +76,17 @@ public class MuteWatcherService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (!DevicePrefs.isMuteRemapEnabled(this) || !hasBluetoothPermission()) {
+            stopSelf();
+            return START_NOT_STICKY;
+        }
         return START_STICKY;
+    }
+
+    private boolean hasBluetoothPermission() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.S
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     private void toggleAndUnmute() {

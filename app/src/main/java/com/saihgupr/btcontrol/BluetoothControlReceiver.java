@@ -42,10 +42,12 @@ public class BluetoothControlReceiver extends BroadcastReceiver {
         Log.d(TAG, "Received action: " + action);
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
-            try {
-                context.startForegroundService(new Intent(context, MuteWatcherService.class));
-            } catch (Exception e) {
-                Log.w(TAG, "could not start mute watcher on boot", e);
+            if (DevicePrefs.isMuteRemapEnabled(context)) {
+                try {
+                    context.startForegroundService(new Intent(context, MuteWatcherService.class));
+                } catch (Exception e) {
+                    Log.w(TAG, "could not start mute watcher on boot", e);
+                }
             }
             pendingResult.finish();
             return;

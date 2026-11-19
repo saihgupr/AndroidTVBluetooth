@@ -13,7 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="32dp"
+        android:paddingStart="32dp"
+        android:paddingTop="28dp"
+        android:paddingEnd="32dp"
+        android:paddingBottom="12dp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -43,7 +46,7 @@
             android:background="@drawable/version_pill_bg"
             android:paddingHorizontal="10dp"
             android:paddingVertical="2dp"
-            android:text="v1.3"
+            android:text="v1.3.1"
             android:textColor="@color/text_muted"
 
             android:textSize="11sp"
@@ -254,21 +257,19 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.45" />
 
-    <!-- Noise Control Card -->
+    <!-- Noise Control + Mute Remap Card -->
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/noise_card"
+        android:id="@+id/controls_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="6dp"
         app:cardBackgroundColor="@color/colorSurface"
         app:cardCornerRadius="14dp"
         app:cardElevation="0dp"
         app:strokeWidth="1dp"
         app:strokeColor="@color/card_overlay"
-        android:focusable="true"
-        android:clickable="true"
         app:layout_constraintTop_toBottomOf="@id/header_layout"
         app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
         app:layout_constraintEnd_toEndOf="parent">
@@ -276,49 +277,120 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center_vertical">
+            android:orientation="vertical">
 
+            <!-- Row 1: cycles NC / Ambient / Off -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:id="@+id/noise_card"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="8dp"
+                android:gravity="center_vertical"
+                android:focusable="true"
+                android:clickable="true">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/noise_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/noise_control_title"
+                        android:textColor="@color/colorOnSurface"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <TextView
+                        android:id="@+id/noise_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/noise_control_subtitle"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/noise_title"
+                    android:id="@+id/noise_badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/noise_control_title"
-                    android:textColor="@color/colorOnSurface"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium" />
-
-                <TextView
-                    android:id="@+id/noise_subtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="@string/noise_control_subtitle"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/version_pill_bg"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="3dp"
+                    android:text="@string/noise_control_badge_unknown"
                     android:textColor="@color/text_muted"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:fontFamily="monospace" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/noise_badge"
-                android:layout_width="wrap_content"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/card_overlay" />
+
+            <!-- Row 2: toggles the mute button remap -->
+            <LinearLayout
+                android:id="@+id/mute_card"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:background="@drawable/version_pill_bg"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="3dp"
-                android:text="@string/noise_control_badge_unknown"
-                android:textColor="@color/text_muted"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:fontFamily="monospace" />
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="12dp"
+                android:gravity="center_vertical"
+                android:focusable="true"
+                android:clickable="true">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/mute_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mute_remap_title"
+                        android:textColor="@color/colorOnSurface"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <TextView
+                        android:id="@+id/mute_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/mute_remap_desc_on"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/mute_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:focusable="false"
+                    android:clickable="false" />
+            </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -328,24 +400,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/paired_devices"
         android:textColor="@color/text_muted"
         android:textSize="14sp"
         android:textStyle="bold"
         android:textAllCaps="true"
         android:letterSpacing="0.1"
-        app:layout_constraintTop_toBottomOf="@id/noise_card"
+        app:layout_constraintTop_toBottomOf="@id/controls_card"
         app:layout_constraintStart_toEndOf="@id/guideline_vertical" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/devices_recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
         android:clipToPadding="false"
-        android:paddingBottom="16dp"
         app:layout_constraintTop_toBottomOf="@id/devices_header"
         app:layout_constraintStart_toEndOf="@id/guideline_vertical"
         app:layout_constraintEnd_toEndOf="parent"

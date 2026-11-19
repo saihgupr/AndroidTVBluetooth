@@ -44,7 +44,10 @@
     <!-- Noise Control (Sony) -->
     <string name="noise_control_activity_label">Toggle Transparency</string>
     <string name="noise_control_title">Noise Control</string>
-    <string name="noise_control_subtitle">Tap to cycle. Mute toggles NC/Transparency.</string>
+    <string name="noise_control_subtitle">Select to cycle NC, Ambient, Off</string>
+    <string name="mute_remap_title">Mute Button Remap</string>
+    <string name="mute_remap_desc_on">Mute toggles NC/Transparency</string>
+    <string name="mute_remap_desc_off">Mute works normally</string>
     <string name="mute_watch_title">Noise control ready</string>
     <string name="mute_watch_text">Mute toggles noise cancelling and transparency</string>
     <string name="noise_control_badge_nc">NC</string>

@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.3.1
+
+### Added
+
+- **Mute Button Remap toggle.** A new card with a switch turns the mute remap on or off.
+  Off stops the background watcher and returns mute to its normal TV behaviour.
+
+### Notes
+
+- Default is off. Turn the switch on to use the remap.
+
 ## 1.3.0
 
 ### Added

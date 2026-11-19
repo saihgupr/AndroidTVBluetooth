@@ -1,6 +1,6 @@
 # AndroidTV Bluetooth Controller
 
-![screenshot](images/20261119114559.png)
+![screenshot](images/20261119124200.png)
 
 A lightweight utility for Android TV and Android phones that gives you a **1-click UI** to connect/disconnect Bluetooth devices, or complete **ADB automation** support.
 
@@ -45,15 +45,17 @@ installed on the headset.
 
 - **In-app:** the **Noise Control** card in the right column cycles `NC → AMB → OFF`
   with a single click. The badge shows the last known mode.
-- **Mute button:** a single press of the remote's mute toggles between noise cancelling
-  and transparency. The app notices the mute, switches the headset, then restores the
-  TV volume within about a second.
+- **Mute button:** off by default. Turn on the **Mute Button Remap** switch and a single press
+  of the remote's mute toggles between noise cancelling and transparency.
+  The app notices the mute, switches the headset, then restores the TV volume within about
+  a second. Turn the switch off and mute behaves exactly like before, and the background
+  watcher stops.
 
   For this to work the remote has to send the key to the TV box, not to the TV over IR:
   **Settings → Remotes & Accessories → your remote → Set up remote buttons →
   Volume control → Chromecast**. If it is set to the TV, Android never sees the press.
 
-  While this is running, mute no longer mutes the TV. Use the volume keys for silence.
+  While the remap is on, mute no longer mutes the TV. Use the volume keys for silence.
 
 - **Button Mapper (other devices):** map any button to **Toggle Transparency**
   (`com.saihgupr.btcontrol/.ToggleTransparencyActivity`). It flips the mode and closes
