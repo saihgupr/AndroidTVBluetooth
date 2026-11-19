@@ -1,11 +1,14 @@
 package com.saihgupr.btcontrol.sony;
 
 import android.bluetooth.BluetoothDevice;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.Locale;
 
 public final class SonyController {
+
+    private static final String TAG = "SonyController";
 
     private SonyController() {
     }
@@ -49,8 +52,10 @@ public final class SonyController {
         try {
             session = new SonySession(device);
         } catch (SecurityException e) {
+            Log.e(TAG, "connect denied", e);
             return SonySession.Result.error("Bluetooth permission missing");
         } catch (IOException e) {
+            Log.e(TAG, "connect failed: " + e.getMessage(), e);
             return SonySession.Result.error("Headphones unreachable");
         }
 

@@ -128,9 +128,10 @@ does not open two sockets.
    adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_ANC \
      -n com.saihgupr.btcontrol/.BluetoothControlReceiver -e mode toggle
    ```
-3. **In-app card:** a "Noise Control" card in the left column under Safe
-   Startup Volume. Badge shows `NC` / `AMB` / `OFF` / `--`. Click cycles modes,
-   same worker path. Disabled when the connected device is not a Sony headset.
+3. **In-app card:** a "Noise Control" card at the top of the right column, above
+   PAIRED DEVICES (the left column is already full at 1080p). Badge shows
+   `NC` / `AMB` / `OFF` / `--`. Click cycles modes, same worker path. Disabled
+   when the connected device is not a Sony headset.
 
 ## Manifest changes
 

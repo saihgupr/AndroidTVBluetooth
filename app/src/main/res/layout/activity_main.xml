@@ -62,7 +62,7 @@
         app:cardElevation="0dp"
         app:strokeWidth="1dp"
         app:strokeColor="@color/card_overlay"
-        app:layout_constraintTop_toTopOf="@id/devices_recycler"
+        app:layout_constraintTop_toBottomOf="@id/header_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical">
 
@@ -247,29 +247,37 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.45" />
+
     <!-- Noise Control Card -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/noise_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="4dp"
         app:cardBackgroundColor="@color/colorSurface"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="14dp"
         app:cardElevation="0dp"
         app:strokeWidth="1dp"
         app:strokeColor="@color/card_overlay"
         android:focusable="true"
         android:clickable="true"
-        app:layout_constraintTop_toBottomOf="@id/volume_card"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical">
+        app:layout_constraintTop_toBottomOf="@id/header_layout"
+        app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="20dp"
+            android:padding="16dp"
             android:gravity="center_vertical">
 
             <LinearLayout
@@ -284,7 +292,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/noise_control_title"
                     android:textColor="@color/colorOnSurface"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium" />
 
@@ -314,28 +322,20 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.45" />
-
     <!-- Paired Devices Section -->
     <TextView
         android:id="@+id/devices_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/paired_devices"
         android:textColor="@color/text_muted"
         android:textSize="14sp"
         android:textStyle="bold"
         android:textAllCaps="true"
         android:letterSpacing="0.1"
-        app:layout_constraintTop_toBottomOf="@id/header_layout"
+        app:layout_constraintTop_toBottomOf="@id/noise_card"
         app:layout_constraintStart_toEndOf="@id/guideline_vertical" />
 
     <androidx.recyclerview.widget.RecyclerView
