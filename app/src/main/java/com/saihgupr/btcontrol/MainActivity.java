@@ -23,6 +23,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
+import com.saihgupr.btcontrol.sony.SonyController;
+import com.saihgupr.btcontrol.sony.SonySession;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
     private MaterialCardView volumeCard;
     private TextView volumeSubtitle;
     private TextView volumeBadge;
+    private MaterialCardView noiseCard;
+    private TextView noiseSubtitle;
+    private TextView noiseBadge;
+    private boolean noiseBusy = false;
     private RecyclerView devicesRecycler;
     private DeviceAdapter deviceAdapter;
     private BluetoothManagerHelper btHelper;
@@ -64,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
                 updateStatus();
                 updateAutoConnectUI();
                 updateVolumeUI();
+                updateNoiseUI();
             }
         }
     };
@@ -82,6 +89,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
         volumeCard = findViewById(R.id.volume_card);
         volumeSubtitle = findViewById(R.id.volume_subtitle);
         volumeBadge = findViewById(R.id.volume_badge);
+        noiseCard = findViewById(R.id.noise_card);
+        noiseSubtitle = findViewById(R.id.noise_subtitle);
+        noiseBadge = findViewById(R.id.noise_badge);
         devicesRecycler = findViewById(R.id.devices_recycler);
 
         btHelper = new BluetoothManagerHelper(this);
@@ -116,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
 
         setupAutoConnectCard();
         setupVolumeCard();
+        setupNoiseCard();
     }
 
     private void setupAutoConnectCard() {
@@ -181,6 +192,131 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
             volumeBadge.setText("OFF");
             volumeBadge.setTextColor(ContextCompat.getColor(this, R.color.text_muted));
         }
+    }
+
+    private void setupNoiseCard() {
+        if (noiseCard == null) return;
+
+        noiseCard.setOnClickListener(v -> cycleNoiseMode());
+        updateNoiseUI();
+    }
+
+    private void cycleNoiseMode() {
+        if (noiseBusy) return;
+
+        BluetoothDevice device = findConnectedSonyDevice();
+        if (device == null) {
+            Toast.makeText(this, R.string.noise_control_no_device, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SonySession.Mode current = getLastNoiseMode();
+        final SonySession.Mode next;
+        if (current == SonySession.Mode.NC) {
+            next = SonySession.Mode.AMBIENT;
+        } else if (current == SonySession.Mode.AMBIENT) {
+            next = SonySession.Mode.OFF;
+        } else {
+            next = SonySession.Mode.NC;
+        }
+
+        final int ambientLevel = DevicePrefs.getAmbientLevel(this);
+        noiseBusy = true;
+
+        new Thread(() -> {
+            SonySession.Result result = null;
+            try {
+                result = SonyController.setMode(device, next, ambientLevel);
+            } catch (Exception e) {
+                Log.e(TAG, "Sony setMode failed", e);
+            }
+            final SonySession.Result finalResult = result;
+            runOnUiThread(() -> {
+                noiseBusy = false;
+                if (finalResult != null && finalResult.ok) {
+                    SonySession.Mode applied = finalResult.mode != null ? finalResult.mode : next;
+                    DevicePrefs.setLastAncMode(this, applied.name());
+                    updateNoiseUI();
+                    Toast.makeText(this, getNoiseModeToast(applied), Toast.LENGTH_SHORT).show();
+                } else {
+                    String error = (finalResult != null && finalResult.error != null)
+                            ? finalResult.error
+                            : getString(R.string.noise_control_failed);
+                    Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+                }
+            });
+        }, "noise-control-cycle").start();
+    }
+
+    private BluetoothDevice findConnectedSonyDevice() {
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter == null || !adapter.isEnabled()) return null;
+
+        try {
+            Set<BluetoothDevice> bondedDevices = adapter.getBondedDevices();
+            if (bondedDevices == null) return null;
+
+            for (BluetoothDevice device : bondedDevices) {
+                try {
+                    if (btHelper.getConnectionState(device) == BluetoothProfile.STATE_CONNECTED
+                            && SonyController.looksLikeSony(device)) {
+                        return device;
+                    }
+                } catch (Exception e) {
+                    Log.w(TAG, "Sony check failed for " + device.getAddress(), e);
+                }
+            }
+        } catch (SecurityException e) {
+            Log.e(TAG, "SecurityException while looking for a Sony device", e);
+        }
+
+        return null;
+    }
+
+    private SonySession.Mode getLastNoiseMode() {
+        String saved = DevicePrefs.getLastAncMode(this);
+        if (saved != null) {
+            try {
+                return SonySession.Mode.valueOf(saved);
+            } catch (IllegalArgumentException ignored) {
+                // Stored value from an older or newer build, fall through
+            }
+        }
+        return SonySession.Mode.UNKNOWN;
+    }
+
+    private int getNoiseModeToast(SonySession.Mode mode) {
+        if (mode == SonySession.Mode.NC) return R.string.noise_control_toast_nc;
+        if (mode == SonySession.Mode.AMBIENT) return R.string.noise_control_toast_ambient;
+        if (mode == SonySession.Mode.OFF) return R.string.noise_control_toast_off;
+        return R.string.noise_control_toast_updated;
+    }
+
+    private void updateNoiseUI() {
+        if (noiseSubtitle == null || noiseBadge == null) return;
+
+        SonySession.Mode mode = getLastNoiseMode();
+        int badgeRes;
+        int badgeColor;
+        if (mode == SonySession.Mode.NC) {
+            badgeRes = R.string.noise_control_badge_nc;
+            badgeColor = R.color.colorPrimary;
+        } else if (mode == SonySession.Mode.AMBIENT) {
+            badgeRes = R.string.noise_control_badge_ambient;
+            badgeColor = R.color.status_ready;
+        } else if (mode == SonySession.Mode.OFF) {
+            badgeRes = R.string.noise_control_badge_off;
+            badgeColor = R.color.text_muted;
+        } else {
+            badgeRes = R.string.noise_control_badge_unknown;
+            badgeColor = R.color.text_muted;
+        }
+
+        noiseSubtitle.setText(R.string.noise_control_subtitle);
+        noiseSubtitle.setTextColor(ContextCompat.getColor(this,
+                mode == SonySession.Mode.UNKNOWN ? R.color.text_muted : R.color.colorSecondary));
+        noiseBadge.setText(badgeRes);
+        noiseBadge.setTextColor(ContextCompat.getColor(this, badgeColor));
     }
 
     private void updateAutoConnectUI() {
@@ -281,6 +417,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
         updateDeviceList();
         updateAutoConnectUI();
         updateVolumeUI();
+        updateNoiseUI();
     }
 
 

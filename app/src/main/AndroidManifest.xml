@@ -43,6 +43,20 @@
         </activity>
 
 
+        <activity
+            android:name=".ToggleTransparencyActivity"
+            android:exported="true"
+            android:label="@string/noise_control_activity_label"
+            android:theme="@style/Theme.AndroidTVBluetooth.QuickConnect"
+            android:excludeFromRecents="true"
+            android:taskAffinity="">
+            <intent-filter>
+                <action android:name="com.saihgupr.btcontrol.ACTION_TOGGLE_TRANSPARENCY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
         <receiver
             android:name=".BluetoothControlReceiver"
             android:enabled="true"
@@ -52,6 +66,7 @@
             <intent-filter>
                 <action android:name="com.saihgupr.btcontrol.ACTION_CONNECT" />
                 <action android:name="com.saihgupr.btcontrol.ACTION_DISCONNECT" />
+                <action android:name="com.saihgupr.btcontrol.ACTION_ANC" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>

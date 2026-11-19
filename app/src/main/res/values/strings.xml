@@ -41,6 +41,24 @@
     <string name="startup_volume_set">Startup headphone volume set to %1$d%%</string>
     <string name="startup_volume_disabled_toast">Startup headphone volume disabled</string>
 
+    <!-- Noise Control (Sony) -->
+    <string name="noise_control_activity_label">Toggle Transparency</string>
+    <string name="noise_control_title">Noise Control</string>
+    <string name="noise_control_subtitle">Tap to cycle NC, Ambient, Off</string>
+    <string name="noise_control_badge_nc">NC</string>
+    <string name="noise_control_badge_ambient">AMB</string>
+    <string name="noise_control_badge_off">OFF</string>
+    <string name="noise_control_badge_unknown">--</string>
+    <string name="noise_control_toast_nc">Noise cancelling on</string>
+    <string name="noise_control_toast_ambient">Transparency on</string>
+    <string name="noise_control_toast_off">Noise control off</string>
+    <string name="noise_control_toast_updated">Noise mode updated</string>
+    <string name="noise_control_connecting">Connecting to %1$s…</string>
+    <string name="noise_control_no_device">No Sony headphones connected</string>
+    <string name="noise_control_failed">Noise control failed</string>
+    <string name="noise_control_permission">Grant BLUETOOTH_CONNECT to control noise mode</string>
+    <string name="noise_control_timeout">No response from headphones</string>
+
     <!-- Mobile Quick Settings & Widget -->
     <string name="tile_label">BT Quick Connect</string>
     <string name="widget_name">Bluetooth Controller</string>

@@ -35,6 +35,20 @@ You can map a button on your Shield or Android TV remote using **Button Mapper**
   ```
   *This instantly connects to your default/recent device in the background and closes cleanly without interrupting your playback.*
 
+### Noise Control (Sony Transparency Toggle)
+On Sony headsets that support it (`WH-1000XM`, `WF-1000XM`, `MDR-`), you can put the headset's noise cancelling / ambient sound mode on a remote button too:
+- **Option 1 (App / Activity):** In Button Mapper, map **mute → single press → Applications > Toggle Transparency** (`com.saihgupr.btcontrol/.ToggleTransparencyActivity`). Single press flips between noise cancelling and transparency, then closes. Leave mute long press unassigned if you still want the TV's normal mute.
+- **Option 2 (ADB / Intent Action):**
+  ```bash
+  adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_ANC \
+    -n com.saihgupr.btcontrol/.BluetoothControlReceiver \
+    -e mode transparency
+  ```
+  `mode` accepts `toggle`, `nc`, `transparency`, `ambient` or `off`, and the extra `name` / `address` targets a specific headset (otherwise your default device is used).
+- **In-app:** the **Noise Control** card in the left panel cycles `NC → AMB → OFF` with a single click. The badge shows the last known mode.
+
+*The first press can take a couple of seconds while the headset link comes up. The card and the ADB action only work with Sony headphones; on anything else they report that no Sony headphones are connected.*
+
 ### Mobile Quick Settings & Widget
 - **Quick Settings Tile:** Edit your Quick Settings shade on your phone and add the **BT Quick Connect** tile for 1-tap connection toggle and live battery status.
 - **Home Screen Widget:** Long-press your home screen, select Widgets, and add the **Bluetooth Controller** 1x1 widget.
