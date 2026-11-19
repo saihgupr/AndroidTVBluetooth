@@ -1,16 +1,65 @@
 package com.saihgupr.btcontrol.sony;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.util.Log;
+
+import com.saihgupr.btcontrol.DevicePrefs;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Set;
 
 public final class SonyController {
 
     private static final String TAG = "SonyController";
 
     private SonyController() {
+    }
+
+    public static BluetoothDevice resolveSonyDevice(Context context) {
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter == null || !adapter.isEnabled()) {
+            return null;
+        }
+
+        Set<BluetoothDevice> bonded = adapter.getBondedDevices();
+        if (bonded == null || bonded.isEmpty()) {
+            return null;
+        }
+
+        String defaultAddress = DevicePrefs.getDefaultDeviceAddress(context);
+        if (defaultAddress != null) {
+            for (BluetoothDevice device : bonded) {
+                if (device.getAddress().equalsIgnoreCase(defaultAddress) && looksLikeSony(device)) {
+                    return device;
+                }
+            }
+        }
+
+        BluetoothDevice mostRecent = null;
+        long latest = 0;
+        for (BluetoothDevice device : bonded) {
+            if (!looksLikeSony(device)) {
+                continue;
+            }
+            long lastUsed = DevicePrefs.getLastUsed(context, device.getAddress());
+            if (lastUsed > latest) {
+                latest = lastUsed;
+                mostRecent = device;
+            }
+        }
+        if (mostRecent != null) {
+            return mostRecent;
+        }
+
+        for (BluetoothDevice device : bonded) {
+            if (looksLikeSony(device)) {
+                return device;
+            }
+        }
+        return null;
     }
 
     public static boolean looksLikeSony(BluetoothDevice device) {

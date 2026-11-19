@@ -127,6 +127,17 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
         setupAutoConnectCard();
         setupVolumeCard();
         setupNoiseCard();
+
+        startMuteWatcher();
+    }
+
+    private void startMuteWatcher() {
+        try {
+            ContextCompat.startForegroundService(this,
+                    new Intent(this, MuteWatcherService.class));
+        } catch (Exception e) {
+            Log.w(TAG, "could not start mute watcher", e);
+        }
     }
 
     private void setupAutoConnectCard() {

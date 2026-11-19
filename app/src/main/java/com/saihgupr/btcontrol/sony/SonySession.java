@@ -48,6 +48,7 @@ public final class SonySession implements AutoCloseable {
     private static final long GET_TIMEOUT_MS = 2000;
     private static final long SET_SETTLE_MS = 500;
     private static final int MAX_AMBIENT_LEVEL = 0x14;
+    private static final int ASM_ID_VOICE = 0x01;
     private static final char[] HEX = "0123456789ABCDEF".toCharArray();
     private static final byte[] EOF = new byte[0];
 
@@ -160,7 +161,8 @@ public final class SonySession implements AutoCloseable {
 
         byte[] payload;
         if (mode == Mode.AMBIENT) {
-            payload = new byte[]{0x68, 0x02, 0x11, (byte) ncType, 0x00, (byte) asmType, 0x00, (byte) level};
+            // asmId 0x01 = voice focus: speech passes, other ambient noise is reduced.
+            payload = new byte[]{0x68, 0x02, 0x11, (byte) ncType, 0x00, (byte) asmType, (byte) ASM_ID_VOICE, (byte) level};
         } else if (mode == Mode.NC) {
             payload = new byte[]{0x68, 0x02, 0x11, (byte) ncType, 0x02, (byte) asmType, 0x00, 0x00};
         } else {
