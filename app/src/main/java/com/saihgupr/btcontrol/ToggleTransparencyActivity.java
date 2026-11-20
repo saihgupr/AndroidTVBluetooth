@@ -31,8 +31,6 @@ public class ToggleTransparencyActivity extends AppCompatActivity {
     public static final String EXTRA_ADDRESS = "address";
     public static final String EXTRA_NAME = "name";
 
-    private static final long CONNECT_TIMEOUT_MS = 2500;
-    private static final long CONNECT_POLL_MS = 150;
     private static final long WATCHDOG_MS = 12000;
     private static final long DEBOUNCE_MS = 750;
 
@@ -95,17 +93,9 @@ public class ToggleTransparencyActivity extends AppCompatActivity {
             return;
         }
 
-        int state = btHelper.getConnectionState(targetDevice);
-        if (state == BluetoothProfile.STATE_CONNECTED) {
-            toggleAsync(targetDevice);
-        } else {
-            String displayName = targetDevice.getName() != null ? targetDevice.getName() : targetDevice.getAddress();
-            Toast.makeText(this, getString(R.string.noise_control_connecting, displayName), Toast.LENGTH_SHORT).show();
-            if (state != BluetoothProfile.STATE_CONNECTING) {
-                btHelper.connect(targetDevice.getAddress());
-            }
-            pollForConnection(targetDevice, SystemClock.elapsedRealtime() + CONNECT_TIMEOUT_MS);
-        }
+        // The A2DP proxy often reports "not connected" for a moment even when the headset is
+        // right there, so go straight for the RFCOMM link instead of waiting on it.
+        toggleAsync(targetDevice);
     }
 
     private boolean acquireGuard() {
@@ -224,25 +214,6 @@ public class ToggleTransparencyActivity extends AppCompatActivity {
             Log.e(TAG, "SecurityException while resolving target device", e);
             return null;
         }
-    }
-
-    private void pollForConnection(BluetoothDevice device, long deadline) {
-        if (isFinished) return;
-
-        if (btHelper.getConnectionState(device) == BluetoothProfile.STATE_CONNECTED) {
-            toggleAsync(device);
-            return;
-        }
-
-        if (SystemClock.elapsedRealtime() >= deadline) {
-            // Let the Sony session decide: the RFCOMM link can work before the
-            // A2DP proxy reports connected.
-            Log.w(TAG, "Device not reported connected in time, attempting toggle anyway");
-            toggleAsync(device);
-            return;
-        }
-
-        mainHandler.postDelayed(() -> pollForConnection(device, deadline), CONNECT_POLL_MS);
     }
 
     private void toggleAsync(BluetoothDevice device) {
