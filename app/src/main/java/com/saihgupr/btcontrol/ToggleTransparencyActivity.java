@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,6 +39,13 @@ public class ToggleTransparencyActivity extends AppCompatActivity {
     // Guards against a double press opening two RFCOMM sockets in a row.
     private static final AtomicBoolean sInFlight = new AtomicBoolean(false);
     private static long sLastFinishTime = 0;
+    private static volatile long sLastRunAt = 0;
+
+    /** True right after this activity muted or unmuted the TV, so the mute watcher stays out. */
+    static boolean ranRecently() {
+        long at = sLastRunAt;
+        return at != 0 && SystemClock.elapsedRealtime() - at < 4000;
+    }
 
     private BluetoothManagerHelper btHelper;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -47,6 +55,10 @@ public class ToggleTransparencyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Remapped remote buttons start this activity after the TV has already handled the
+        // mute press. Put the audio back before doing anything slow.
+        restoreTvVolume();
 
         if (!acquireGuard()) {
             Log.d(TAG, "Toggle already in flight or debounced");
@@ -281,9 +293,27 @@ public class ToggleTransparencyActivity extends AppCompatActivity {
     private synchronized void finishAndCleanUp() {
         if (isFinished) return;
         isFinished = true;
+        restoreTvVolume();
         mainHandler.removeCallbacksAndMessages(null);
         releaseGuard();
         finish();
+    }
+
+    /**
+     * Android TV handles the remote mute key below the app layer, so no app can stop that
+     * mute. Undoing it as soon as we run is the closest we can get.
+     */
+    private void restoreTvVolume() {
+        sLastRunAt = SystemClock.elapsedRealtime();
+        try {
+            AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+            if (audioManager != null && audioManager.isStreamMute(AudioManager.STREAM_MUSIC)) {
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_UNMUTE, 0);
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "could not restore TV volume", e);
+        }
     }
 
     @Override

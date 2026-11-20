@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 
 import android.view.View;
@@ -226,8 +227,25 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
         updateMuteUI();
         if (enabled) {
             startMuteWatcher();
+            if (!MuteKeyService.isEnabled(this)) {
+                openAccessibilitySettings();
+            }
         } else {
             stopService(new Intent(this, MuteWatcherService.class));
+        }
+    }
+
+    private void openAccessibilitySettings() {
+        Toast.makeText(this, R.string.mute_remap_open_settings_toast, Toast.LENGTH_LONG).show();
+        try {
+            startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+        } catch (Exception e) {
+            Log.w(TAG, "no accessibility settings screen", e);
+            try {
+                startActivity(new Intent(Settings.ACTION_SETTINGS));
+            } catch (Exception ignored) {
+                // Nothing else to open.
+            }
         }
     }
 
@@ -236,9 +254,13 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
 
         boolean enabled = DevicePrefs.isMuteRemapEnabled(this);
         muteSwitch.setChecked(enabled);
-        muteSubtitle.setText(enabled
-                ? R.string.mute_remap_desc_on
-                : R.string.mute_remap_desc_off);
+        if (!enabled) {
+            muteSubtitle.setText(R.string.mute_remap_desc_off);
+        } else if (!MuteKeyService.isEnabled(this)) {
+            muteSubtitle.setText(R.string.mute_remap_desc_needs_accessibility);
+        } else {
+            muteSubtitle.setText(R.string.mute_remap_desc_on);
+        }
         muteSubtitle.setTextColor(ContextCompat.getColor(this,
                 enabled ? R.color.colorSecondary : R.color.text_muted));
     }
@@ -247,6 +269,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
         if (!DevicePrefs.isMuteRemapEnabled(this)) {
             return;
         }
+        // The watcher stays on until the accessibility service proves it can see the mute
+        // key, which is the only way to know whether a real long press is available here.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
                 && ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -549,6 +573,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerH
         updateAutoConnectUI();
         updateVolumeUI();
         updateNoiseUI();
+        updateMuteUI();
     }
 
 

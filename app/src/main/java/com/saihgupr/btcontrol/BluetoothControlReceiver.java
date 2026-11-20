@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.os.Build;
 import android.util.Log;
 import androidx.core.content.ContextCompat;
@@ -107,6 +108,9 @@ public class BluetoothControlReceiver extends BroadcastReceiver {
 
         new Thread(() -> {
             try {
+                // A remapped mute button has already muted the TV by the time we run.
+                restoreTvVolume(context);
+
                 BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
                 if (adapter == null || !adapter.isEnabled()) {
                     Log.e(TAG, "ANC: Bluetooth is off");
@@ -144,9 +148,22 @@ public class BluetoothControlReceiver extends BroadcastReceiver {
             } catch (Exception e) {
                 Log.e(TAG, "ANC failed", e);
             } finally {
+                restoreTvVolume(context);
                 pendingResult.finish();
             }
         }, "anc-broadcast").start();
+    }
+
+    private void restoreTvVolume(Context context) {
+        try {
+            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            if (audioManager != null && audioManager.isStreamMute(AudioManager.STREAM_MUSIC)) {
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_UNMUTE, 0);
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "could not restore TV volume", e);
+        }
     }
 
     private SonySession.Mode parseAncMode(String mode) {

@@ -12,7 +12,7 @@ A lightweight utility for Android TV and Android phones that gives you a **1-cli
 - **Safe Startup Volume:** Automatically set headphone media volume to a comfortable level (e.g. 30%, 40%, 50%) upon connection to protect your hearing.
 - **Remote Button Mapping (QuickConnect):** Map any button on your Shield/TV remote (via Button Mapper) directly to `QuickConnectActivity` to connect headphones in the background without opening the main UI.
 - **Sony Noise Control:** Switch a Sony headset between noise cancelling, ambient sound and off from the app.
-- **Mute Button Remap:** A single mute press toggles noise cancelling and transparency on the headset, then restores the TV volume.
+- **Mute Button Remap:** Holding mute toggles noise cancelling and transparency on the headset without muting the TV. A normal press still mutes the TV.
 - **Mobile Quick Settings Tile & Widget:** Pull down the notification shade or tap a 1x1 Home Screen widget to toggle connection on Android phones and tablets.
 - **ADB Automation:** Trigger connections/disconnections via terminal or automation scripts (Tasker, Home Assistant).
 - **Recent Sorting:** Automatically sorts paired devices by most recently used.
@@ -45,21 +45,28 @@ installed on the headset.
 
 - **In-app:** the **Noise Control** card in the right column cycles `NC → AMB → OFF`
   with a single click. The badge shows the last known mode.
-- **Mute button:** off by default. Turn on the **Mute Button Remap** switch and a single press
-  of the remote's mute toggles between noise cancelling and transparency.
-  The app notices the mute, switches the headset, then restores the TV volume within about
-  a second. Turn the switch off and mute behaves exactly like before, and the background
-  watcher stops.
+- **Mute button:** off by default. Turn on the **Mute Button Remap** switch and hold the
+  remote's mute for half a second to switch between noise cancelling and transparency.
+  A normal press still mutes the TV, and a long press leaves the TV unmuted.
+  Turn the switch off and everything goes back to normal.
+
+  Android TV hands the remote's volume and mute keys to its audio service instead of the
+  focused app, so a normal app cannot see them. The app therefore ships an Accessibility
+  service that only reads the mute key; the switch opens the accessibility settings the
+  first time you turn it on. No screen content is read.
+
+  If Accessibility stays off, the app falls back to watching the TV's mute state: a double
+  press of mute then toggles the mode, and a single press mutes normally.
 
   For this to work the remote has to send the key to the TV box, not to the TV over IR:
   **Settings → Remotes & Accessories → your remote → Set up remote buttons →
   Volume control → Chromecast**. If it is set to the TV, Android never sees the press.
 
-  While the remap is on, mute no longer mutes the TV. Use the volume keys for silence.
-
-- **Button Mapper (other devices):** map any button to **Toggle Transparency**
-  (`com.saihgupr.btcontrol/.ToggleTransparencyActivity`). It flips the mode and closes
-  without opening the UI.
+- **Button Mapper / tvQuickActions (other devices):** map any button to **Toggle
+  Transparency** (`com.saihgupr.btcontrol/.ToggleTransparencyActivity`). It flips the mode
+  and closes without opening the UI. If the button was mute, it puts the TV volume back on
+  the way out. The mute itself cannot be blocked because Android handles that key below the
+  app layer.
 - **ADB / automation:**
   ```bash
   adb shell am broadcast -a com.saihgupr.btcontrol.ACTION_ANC \
@@ -153,6 +160,11 @@ If connection fails, check `logcat` to see which devices the TV detects:
 adb logcat -d | grep "BtManagerHelper"
 ```
 This will print a list of paired devices if your specified name was not found.
+
+If the mute long press does nothing, check that **AndroidTVBluetooth** is on in
+**Settings → Accessibility**. On Android 13 and newer a sideloaded APK is blocked from
+Accessibility until you open **Settings → Apps → AndroidTVBluetooth → Allow restricted
+settings**. Builds with Accessibility off fall back to the double press instead.
 
 ---
 

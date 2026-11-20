@@ -1,5 +1,42 @@
 # Changelog
 
+## 1.3.3
+
+### Fixed
+
+- A single mute press no longer toggles noise control. The long press now only fires on
+  proof of a real hold: a key repeat while the button is down, or a release after the
+  threshold. Remotes that never report the release no longer trigger on every tap.
+- The mute key is never consumed, so a tap always mutes the TV even when the accessibility
+  service is enabled.
+
+### Added
+
+- `MuteKey` debug logs for every mute press and release, including the hold length.
+- `ToggleTransparencyActivity` and the `ACTION_ANC` broadcast now unmute the TV when they
+  run, so a mute-key trigger from Button Mapper or tvQuickActions does not leave the TV
+  silent. Android handles the mute key below the app layer, so the mute cannot be blocked
+  itself, only undone straight away.
+
+## 1.3.2
+
+### Changed
+
+- **Mute remap is a long press.** Turn the switch on and hold mute for half a second to
+  toggle noise cancelling and transparency without muting the TV. A short press still mutes
+  the TV exactly like before.
+- **New `MuteKeyService`** accessibility service that reads the remote's mute key. Android
+  TV sends volume and mute keys to its audio service instead of the focused app, so this is
+  the only way to tell a tap from a hold. It only looks at `KEYCODE_VOLUME_MUTE` and reads
+  no screen content. Turning the switch on opens the accessibility settings the first time.
+- With Accessibility off, the mute-state watcher stays as a fallback: a double press of mute
+  toggles the mode, a single press mutes normally.
+
+### Notes
+
+- The key service takes over from the mute-state watcher as soon as it connects, so the two
+  never handle the same press. Turning Accessibility off starts the watcher again.
+
 ## 1.3.1
 
 ### Added
