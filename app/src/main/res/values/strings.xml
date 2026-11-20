@@ -58,10 +58,10 @@
     <string name="noise_control_badge_ambient">AMB</string>
     <string name="noise_control_badge_off">OFF</string>
     <string name="noise_control_badge_unknown">--</string>
-    <string name="noise_control_toast_nc">Noise cancelling on</string>
-    <string name="noise_control_toast_ambient">Transparency on</string>
-    <string name="noise_control_toast_off">Noise control off</string>
-    <string name="noise_control_toast_updated">Noise mode updated</string>
+    <string name="noise_control_toast_nc">Noise Cancelling On</string>
+    <string name="noise_control_toast_ambient">Transparency On</string>
+    <string name="noise_control_toast_off">Noise Control Off</string>
+    <string name="noise_control_toast_updated">Noise Mode Updated</string>
     <string name="noise_control_connecting">Connecting to %1$s…</string>
     <string name="noise_control_no_device">No Sony headphones connected</string>
     <string name="noise_control_failed">Noise control failed</string>
